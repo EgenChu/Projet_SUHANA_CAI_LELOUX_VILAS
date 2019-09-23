@@ -3,11 +3,13 @@ import java.util.*;
 
 public class DBDef
 {   
-	List<String> listRel;
-	int compteur=0;
-    /** Constructeur privé */
-    private DBDef()
-    {}
+	List<RelDef> listRel;
+	int compteur = 0;
+    
+	/** Constructeur privé */
+    private DBDef(){
+    	listRel = new ArrayList <RelDef>();
+    }
  
     /** Instance unique pré-initialisée */
     private static DBDef DBDef  = new DBDef();
@@ -18,15 +20,15 @@ public class DBDef
     {   return DBDef;
     }
     
-    public void init() {
+    public static void init() {
     	
     }
     
-    public void finish() {
+    public static void finish() {
     	
     }
     
-    public void addRelation(RelDef a) {
+    public  void addRelation(RelDef a) {
     	compteur++;
     	listRel.add(a);
     }

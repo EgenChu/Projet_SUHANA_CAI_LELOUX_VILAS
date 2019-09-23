@@ -1,5 +1,6 @@
 package SGBD;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RelDef {
@@ -8,5 +9,10 @@ public class RelDef {
 	int numcol;
 	List <String> list;
 	
+	public RelDef(String relname, int numcol, ArrayList<String> list) {
+		this.relname = relname;
+		this.numcol = numcol;
+		this.list = list ;
+	}
 	
 }
