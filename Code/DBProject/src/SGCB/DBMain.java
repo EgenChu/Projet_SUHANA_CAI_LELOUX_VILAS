@@ -3,16 +3,16 @@ package SGBD;
 public class DBMain {
 
 	public static void main(String[] args) {
-		DBManager.getInstance();
-		getInstance().init();
+		dbManager=DBManager.getInstance();
+		dbManager.init();
 		while(true){
 			String chaine = Saisie.lireChaine(null);
 			if(chaine.equalsIgnoreCase("exit")) {
-				getInstance().Finish;
+				dbManager.Finish;
 				break;
 			}
 			else
-				getInstance().ProcessCommand(chaine);
+				dbManager.ProcessCommand(chaine);
 		}
 	}
 
