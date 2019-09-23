@@ -1,4 +1,4 @@
-package SGCB;
+package SGBD;
 
 public class DBManager {
 	
