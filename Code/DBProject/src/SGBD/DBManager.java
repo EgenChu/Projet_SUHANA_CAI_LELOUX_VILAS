@@ -9,9 +9,10 @@ public class DBManager {
 		
 	}
 	
-	private static DBManager dbManager = new DBManager();
+	private static DBManager dbManager = null;
 	
 	public static DBManager getInstance() {
+		if (dbManager == null) dbManager = new DBManager();
 		return dbManager ;
 	}
 	
