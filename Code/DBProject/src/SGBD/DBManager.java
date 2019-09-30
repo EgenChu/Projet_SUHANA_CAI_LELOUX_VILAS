@@ -28,6 +28,7 @@ public class DBManager {
 		StringTokenizer st = new StringTokenizer(commande);
 		
 		String command = st.nextToken();
+		
 		String relname = st.nextToken();
 		int numcol = Integer.parseInt(st.nextToken());
 		ArrayList list = new ArrayList<String>();
