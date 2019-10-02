@@ -1,16 +1,15 @@
 package SGBD;
 
 import java.io.RandomAccessFile;
-import java.nio.file.Path;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 public class DiskManager {
 
 	private DiskManager() {
-		
+
 	}
 
 	private static DiskManager diskManager = null;
@@ -21,52 +20,54 @@ public class DiskManager {
 		return diskManager;
 	}
 
-	public static void createFile(int fileIdx) {
+	public void createFile(int fileIdx) throws IOException {
 		File name = new File("../../DB/" + "Data_" + fileIdx + ".rf");
-		try {
-			if(name.createNewFile()) {
+			if (name.createNewFile()) {
 				System.out.println("Data_" + fileIdx + ".rf" + " created");
-			}else {
+			} else {
 				System.out.println("Data_" + fileIdx + ".rf " + " not created");
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
-	public static PageId addPage(int fileIdx) {		
-		File fichier = new File("../../DB/"+"Data_"+ fileIdx+".rf");
-		RandomAccessFile f = null;
-		PageId p = null;
+	public PageId addPage(int fileIdx) throws IOException {
+		File fichier = new File("../../DB/" + "Data_" + fileIdx + ".rf");
+		RandomAccessFile f = new RandomAccessFile(fichier, "rw");
 		
-		try {
-			f = new RandomAccessFile(fichier,"rw");
-			System.out.println(f.length() + ": size");
-			f.setLength(f.length()+ Constants.pageSize);
-			System.out.println(f.length() + ": size after effect");
-			p = new PageId(fileIdx,(int)((f.length()/Constants.pageSize)-1));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
+//		System.out.println(f.length() + ": size before effect");
+		f.setLength(f.length() + Constants.PAGE_SIZE);
+//		System.out.println(f.length() + ": size after effect");
+		
+		PageId p = new PageId(fileIdx, (int) ((f.length() / Constants.PAGE_SIZE) - 1));
+		f.close();
+
 		return p;
 	}
-	
-	public static void readPage(PageId p,byte[] buff) throws IOException {
-		File fichier = new File("../../DB/"+"Data_"+ p.getFileIdx()+".rf");
-		RandomAccessFile f = new RandomAccessFile(fichier,"rw");	
-//		f.seek(p.getPageIdx()*Constants.pageSize);
-		f.readFully(buff, p.getPageIdx()*Constants.pageSize, Constants.pageSize);
+
+	public void readPage(PageId p, ByteBuffer buff) throws IOException {
+		File fichier = new File("../../DB/" + "Data_" + p.getFileIdx() + ".rf");
+		RandomAccessFile f = new RandomAccessFile(fichier, "r");
+		FileChannel channel = f.getChannel();
+
+//		FileChannel.open(Path.of(, more), StandardOpenOption.READ)();
+		int nmbbyte = channel.read(buff, p.getPageIdx() * Constants.PAGE_SIZE);
+		System.out.println(nmbbyte);
+//		f.readFully(buff, p.getPageIdx()*Constants.pageSize, Constants.pageSize);
+		
+		channel.close();
 		f.close();
 	}
-	
-	public static void writePage(PageId p,byte[] buff) throws IOException {
-		File fichier = new File("../../DB/"+"Data_"+ p.getFileIdx()+".rf");
-		RandomAccessFile f = new RandomAccessFile(fichier,"rw");
-//		f.seek(p.getPageIdx()*Constants.pageSize);
-		f.write(buff,p.getPageIdx()*Constants.pageSize,Constants.pageSize);
-	}
-}
 
+	public void writePage(PageId p, ByteBuffer buff) throws IOException {
+		File fichier = new File("../../DB/" + "Data_" + p.getFileIdx() + ".rf");
+		RandomAccessFile f = new RandomAccessFile(fichier, "rw");
+		FileChannel channel = f.getChannel();
+		
+		channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);
+//		f.write(buff, p.getPageIdx() * Constants.PAGE_SIZE, Constants.PAGE_SIZE);
+		
+		channel.close();
+		f.close();
+	}
+
+}
