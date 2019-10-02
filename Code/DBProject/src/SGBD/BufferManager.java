@@ -1,6 +1,7 @@
 package SGBD;
 
 public class BufferManager {
+	
 	private BufferManager() {
 		
 	}

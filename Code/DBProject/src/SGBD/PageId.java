@@ -25,6 +25,16 @@ public class PageId {
 		this.pageIdx = pageIdx;
 	}
 	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("pageId : ");
+		sb.append(getPageIdx());
+		sb.append("fileId: ");
+		sb.append(getFileIdx());
+		
+		return sb.toString();
+	}
 	
 	
 }
