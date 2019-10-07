@@ -2,6 +2,8 @@ package SGBD;
 
 public class BufferManager {
 	
+	Frame[] frames = new Frame[Constants.FRAME_COUNT] ;
+	
 	private BufferManager() {
 		
 	}
@@ -14,5 +16,7 @@ public class BufferManager {
 		return bufferManager ;
 	}
 	
-	
+	public void FreePage (PageId pageId, boolean valdirty) {
+		
+	}
 }

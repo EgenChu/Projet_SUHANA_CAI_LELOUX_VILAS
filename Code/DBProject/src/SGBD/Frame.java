@@ -10,13 +10,22 @@ public class Frame {
 	private boolean dirty;
 	private Timestamp time;
 	
-	public Frame(PageId pageId) {
-		ByteBuffer.allocate(Constants.PAGE_SIZE);
-		this.setPageId(pageId);
+	public Frame() {
+		buffer=ByteBuffer.allocate(Constants.PAGE_SIZE);
+		this.setPageId(null);
 		this.setPin_count(0);
 		this.setDirty(false);
-		setTime(null);
+		 this.setTime(null);
 	}
+	
+	public void setFrame(PageId pageId ,int pin_count ,boolean dirty ) {
+		this.pageId=pageId;
+		this.pin_count=pin_count;
+		this.dirty=dirty;
+		if(pin_count==0)
+			setTime(new Timestamp(System.currentTimeMillis()));	
+	}
+	
 
 	public PageId getPageId() {
 		return pageId;
@@ -53,7 +62,5 @@ public class Frame {
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
-	
-	
 
 }
