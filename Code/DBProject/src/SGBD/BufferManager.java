@@ -46,6 +46,16 @@ public class BufferManager {
 	}
 
 	public void FreePage(PageId pageId, boolean valdirty) {
-
+		for (int i = 0; i < frames.length; i++) {
+			if(frames[i].getPageId().equals(pageId)) {
+				frames[i].setPin_count(frames[i].getPin_count()-1);
+				frames[i].setDirty(valdirty);
+			}
+		}
+	}
+	
+	
+	public void FlushAll() {
+		
 	}
 }
