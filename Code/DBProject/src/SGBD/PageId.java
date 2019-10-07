@@ -36,5 +36,7 @@ public class PageId {
 		return sb.toString();
 	}
 	
-	
+	public boolean equals(PageId pageId) {
+		return ((this.fileIdx==pageId.fileIdx)&&(this.pageIdx==pageId.pageIdx));
+	}
 }
