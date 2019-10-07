@@ -50,9 +50,9 @@ public class Main {
 		
 	}
 	
-	public static String getName(int fileIdx) {
-		String sb = "../../DB/" + "Data_" + fileIdx + ".txt";
-		return sb;
-	}
+//	public static String getName(int fileIdx) {
+//		String sb = "../../DB/" + "Data_" + fileIdx + ".rf";
+//		return sb;
+//	}
 
 }
