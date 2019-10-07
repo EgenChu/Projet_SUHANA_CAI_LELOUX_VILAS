@@ -21,8 +21,8 @@ public class DiskManager {
 	}
 
 	public void createFile(int fileIdx) throws IOException {
-		File name = new File("../../DB/" + "Data_" + fileIdx + ".rf");
-			if (name.createNewFile()) {
+		File fichier = new File(getName(fileIdx));
+			if (fichier.createNewFile()) {
 				System.out.println("Data_" + fileIdx + ".rf" + " created");
 			} else {
 				System.out.println("Data_" + fileIdx + ".rf " + " not created");
@@ -30,7 +30,7 @@ public class DiskManager {
 	}
 
 	public PageId addPage(int fileIdx) throws IOException {
-		File fichier = new File("../../DB/" + "Data_" + fileIdx + ".rf");
+		File fichier = new File(getName(fileIdx));
 		RandomAccessFile f = new RandomAccessFile(fichier, "rw");
 		
 		
@@ -45,7 +45,7 @@ public class DiskManager {
 	}
 
 	public void readPage(PageId p, ByteBuffer buff) throws IOException {
-		File fichier = new File("../../DB/" + "Data_" + p.getFileIdx() + ".rf");
+		File fichier = new File(getName(p));
 		RandomAccessFile f = new RandomAccessFile(fichier, "r");
 		FileChannel channel = f.getChannel();
 
@@ -59,15 +59,27 @@ public class DiskManager {
 	}
 
 	public void writePage(PageId p, ByteBuffer buff) throws IOException {
-		File fichier = new File("../../DB/" + "Data_" + p.getFileIdx() + ".rf");
+		File fichier = new File(getName(p));
 		RandomAccessFile f = new RandomAccessFile(fichier, "rw");
 		FileChannel channel = f.getChannel();
 		
-		channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);
+		buff.rewind();
+		int nmbbyte = channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);
 //		f.write(buff, p.getPageIdx() * Constants.PAGE_SIZE, Constants.PAGE_SIZE);
+		System.out.println(nmbbyte );
 		
 		channel.close();
 		f.close();
+	}
+	
+	private String getName(PageId p) {
+		String sb = "../../DB/" + "Data_" + p.getFileIdx() + ".txt";
+		return sb;
+	}
+	
+	private String getName(int fileIdx) {
+		String sb = "../../DB/" + "Data_" + fileIdx + ".txt";
+		return sb;
 	}
 
 }
