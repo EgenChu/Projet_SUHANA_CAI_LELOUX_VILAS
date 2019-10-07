@@ -25,6 +25,14 @@ public class Frame {
 			setRefbit(true);	
 	}
 	
+	public void reset() {
+		buffer.clear();
+		pageId = null;
+		pin_count = 0;
+		dirty = false;
+		refbit = false;
+	}
+	
 
 	public PageId getPageId() {
 		return pageId;

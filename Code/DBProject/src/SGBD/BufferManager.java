@@ -19,8 +19,9 @@ public class BufferManager {
 		return bufferManager;
 	}
 
-	public ByteBuffer GetPage(PageId pageId) {
+	public ByteBuffer getPage(PageId pageId) {
 		int espace = Constants.FRAME_COUNT;
+
 		for (int i = 0; i < frames.length; i++) {
 			if (frames[i].getPin_count() == 0) {
 				if (!frames[i].isRefbit()) {
@@ -29,6 +30,7 @@ public class BufferManager {
 				}
 			}
 		}
+
 		if (espace == Constants.FRAME_COUNT) {
 			System.out.println("Erreur dans le code");
 			return null;
@@ -45,17 +47,33 @@ public class BufferManager {
 		}
 	}
 
-	public void FreePage(PageId pageId, boolean valdirty) {
+	public void freePage(PageId pageId, boolean valdirty) {
 		for (int i = 0; i < frames.length; i++) {
-			if(frames[i].getPageId().equals(pageId)) {
-				frames[i].setPin_count(frames[i].getPin_count()-1);
+			if (frames[i].getPageId().equals(pageId)) {
+				frames[i].setPin_count(frames[i].getPin_count() - 1);
 				frames[i].setDirty(valdirty);
 			}
 		}
 	}
-	
-	
-	public void FlushAll() {
+
+	public void flushAll() {
+
+		for (int i = 0; i < frames.length; i++) {
+			if (frames[i].isDirty()) {
+				try {
+					DiskManager.getInstance().writePage(frames[i].getPageId(), frames[i].getBuffer());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				frames[i].setDirty(false);
+			}
+		}
 		
+		for (int i = 0; i < frames.length; i++) {
+			frames[i].reset();
+		}
+
 	}
+
 }
