@@ -1,21 +1,20 @@
 package SGBD;
 
 import java.nio.ByteBuffer;
-import java.sql.Timestamp;
 
 public class Frame {
 	private ByteBuffer buffer;
 	private PageId pageId;
 	private int pin_count;
 	private boolean dirty;
-	private Timestamp time;
+	private boolean refbit;
 	
 	public Frame() {
 		buffer=ByteBuffer.allocate(Constants.PAGE_SIZE);
 		this.setPageId(null);
 		this.setPin_count(0);
 		this.setDirty(false);
-		 this.setTime(null);
+		 this.setRefbit(false);
 	}
 	
 	public void setFrame(PageId pageId ,int pin_count ,boolean dirty ) {
@@ -23,7 +22,7 @@ public class Frame {
 		this.pin_count=pin_count;
 		this.dirty=dirty;
 		if(pin_count==0)
-			setTime(new Timestamp(System.currentTimeMillis()));	
+			setRefbit(true);	
 	}
 	
 
@@ -55,12 +54,12 @@ public class Frame {
 		return buffer;
 	}
 
-	public Timestamp getTime() {
-		return time;
+	public boolean isRefbit() {
+		return refbit;
 	}
 
-	public void setTime(Timestamp time) {
-		this.time = time;
+	public void setRefbit(boolean refbit) {
+		this.refbit = refbit;
 	}
 
 }
