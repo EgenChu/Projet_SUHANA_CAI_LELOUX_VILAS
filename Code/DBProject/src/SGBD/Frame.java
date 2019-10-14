@@ -61,6 +61,10 @@ public class Frame {
 	public ByteBuffer getBuffer() {
 		return buffer;
 	}
+	
+	public void setBuffer(ByteBuffer buffer) {
+		this.buffer = buffer;
+	}
 
 	public boolean isRefbit() {
 		return refbit;
