@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Record {
 
@@ -16,55 +17,57 @@ public class Record {
 	}
 
 	public void writeToBuffer(ByteBuffer buffer, int position) {
-		int nbvalues = reldef.getNumcol();
-
-		for (int i = 0; i < nbvalues; i++) {
-
-			switch (reldef.getList().get(i)) {
-
-			case "int":
-				Integer intvalues = Integer.parseInt(values.get(i));
-				buffer.putInt(position, intvalues);
+		String string;
+		List<String> list = reldef.getList();
+		
+		for (int i = 0; i < reldef.getNumcol(); i++) {
+			string = list.get(i);
+			
+			if(string.startsWith("int")) {
+				buffer.putInt(position,Integer.parseInt(values.get(i)));
 				position += Integer.BYTES;
-				break;
-
-			case "float":
-				Float floatvalues = Float.parseFloat(values.get(i));
-				buffer.putFloat(position, floatvalues);
-				position += Float.BYTES;
-				break;
-
-			case "String":
-				CharBuffer cb = buffer.asCharBuffer();
-				cb.put(values.get(i));
-				break;
-
 			}
-
+			else if(string.startsWith("float")) {
+				buffer.putFloat(position,Float.parseFloat(values.get(i)));
+				position += Float.BYTES;
+			}
+			else if(string.startsWith("string")) {
+				buffer.put(values.get(i).getBytes());
+				position += values.get(i).length();
+			}
 		}
 
 	}
 	
 	public void readFromBuffer(ByteBuffer buffer, int position) {
+		String string;
+		List<String> list = reldef.getList();
+		
+		for (int i = 0; i < reldef.getNumcol(); i++) {
+			string = list.get(i);
+			
+			if(string.startsWith("int")) {
+				buffer.getInt(position);
+				position += Integer.BYTES;
+			}
+			else if(string.startsWith("float")) {
+				buffer.getFloat(position);
+				position += Float.BYTES;
+			}
+			else if(string.startsWith("string")) {
+				StringTokenizer st = new StringTokenizer(string,"string");
+				int sizeString = Integer.parseInt(st.toString());
+				
+				CharBuffer cb = buffer.asCharBuffer();
+				
+				for(int j = position; i < sizeString;j++) {
+					cb.get(j);
+				}
+				
+				position += sizeString;
+			}
+		}
 		
 	}
-
-	/*
-	 * for(String a : reldef.getList()) {
-	 * 
-	 * switch(a) {
-	 * 
-	 * case "int" :
-	 * 
-	 * break;
-	 * 
-	 * case "float" : break;
-	 * 
-	 * case "String" : break;
-	 * 
-	 * }
-	 * 
-	 * } }
-	 */
 
 }
