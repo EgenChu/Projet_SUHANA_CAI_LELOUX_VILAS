@@ -24,8 +24,12 @@ public class Main {
 			
 			BufferManager.getInstance().getPage(page);
 			BufferManager.getInstance().getPage(page2);
-			BufferManager.getInstance().freePage(page, false);
-			BufferManager.getInstance().getPage(page3);
+			ByteBuffer b = ByteBuffer.allocate(4);
+			b.put((byte)4);
+			b.rewind();
+			BufferManager.getInstance().frames.get(0).setBuffer(b);
+			//BufferManager.getInstance().freePage(page, true);
+			//BufferManager.getInstance().getPage(page3);
 
 
 			/*DiskManager.getInstance().readPage(page, buff);
