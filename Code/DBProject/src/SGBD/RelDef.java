@@ -18,12 +18,12 @@ public class RelDef {
 		this.list = list ;
 	}
 	
-	public int getNumcol() {
-		return numcol;
-	}
-	
 	public List<String> getList() {
-		return list;
+		return this.list;
+	}
+
+	public int getNumcol() {
+		return this.numcol;
 	}	
 	
 	
