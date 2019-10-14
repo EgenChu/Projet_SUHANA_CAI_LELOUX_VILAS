@@ -25,7 +25,7 @@ public class DiskManager {
 			if (fichier.createNewFile()) {
 				System.out.println("Data_" + fileIdx + ".rf" + " created");
 			} else {
-				System.out.println("Data_" + fileIdx + ".rf " + " not created");
+				System.out.println("Data_" + fileIdx + ".rf" + " not created");
 			}
 	}
 

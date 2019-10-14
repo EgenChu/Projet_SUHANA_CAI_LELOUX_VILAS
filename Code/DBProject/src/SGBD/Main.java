@@ -16,11 +16,11 @@ public class Main {
 //	    FileChannel fChan;
 		ByteBuffer buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		
-		PageId page = new PageId(5,0);
+		PageId page = new PageId(2,0);
 		
 		try {
-			DiskManager.getInstance().createFile(5);
-			DiskManager.getInstance().addPage(5);
+			DiskManager.getInstance().createFile(2);
+			DiskManager.getInstance().addPage(2);
 			
 //			fOut = new File(getName(5));
 //			f = new RandomAccessFile(fOut, "rw");
@@ -49,10 +49,10 @@ public class Main {
 		}
 		
 	}
-	
-//	public static String getName(int fileIdx) {
-//		String sb = "../../DB/" + "Data_" + fileIdx + ".rf";
-//		return sb;
-//	}
+
+	public static String getName(int fileIdx) {
+		String sb = "../../DB/" + "Data_" + fileIdx + ".rf";
+		return sb;
+	}
 
 }
