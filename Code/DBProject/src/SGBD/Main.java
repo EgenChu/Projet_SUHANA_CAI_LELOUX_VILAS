@@ -28,8 +28,8 @@ public class Main {
 			b.put((byte)4);
 			b.rewind();
 			BufferManager.getInstance().frames.get(0).setBuffer(b);
-			//BufferManager.getInstance().freePage(page, true);
-			//BufferManager.getInstance().getPage(page3);
+			BufferManager.getInstance().freePage(page, true);
+			BufferManager.getInstance().getPage(page3);
 
 
 			/*DiskManager.getInstance().readPage(page, buff);

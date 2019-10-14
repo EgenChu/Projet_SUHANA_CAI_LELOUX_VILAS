@@ -46,25 +46,12 @@ public class Record {
 	}
 	
 	public void readFromBuffer(ByteBuffer buffer, int position) {
-		
+		while(buffer.hasRemaining()) {
+		buffer.get(position);
+		position++;
+		}
 	}
 
-	/*
-	 * for(String a : reldef.getList()) {
-	 * 
-	 * switch(a) {
-	 * 
-	 * case "int" :
-	 * 
-	 * break;
-	 * 
-	 * case "float" : break;
-	 * 
-	 * case "String" : break;
-	 * 
-	 * }
-	 * 
-	 * } }
-	 */
+	
 
 }
