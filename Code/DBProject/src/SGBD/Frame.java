@@ -22,7 +22,7 @@ public class Frame {
 		this.pin_count=pin_count;
 		this.dirty=dirty;
 		if(pin_count==0)
-			setRefbit(true);	
+		setRefbit(true);	
 	}
 	
 	public void reset() {

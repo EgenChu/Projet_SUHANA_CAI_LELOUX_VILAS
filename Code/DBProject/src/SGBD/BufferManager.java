@@ -2,13 +2,17 @@ package SGBD;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class BufferManager {
-
-	Frame[] frames = new Frame[Constants.FRAME_COUNT];
+	//private Frame[] frames;
+	ArrayList<Frame> frames ;
 
 	private BufferManager() {
-
+		frames = new ArrayList<Frame>(Constants.FRAME_COUNT);
+		for(int i = 0; i < Constants.FRAME_COUNT; i++) {
+			frames.add(new Frame());
+		}
 	}
 
 	private static BufferManager bufferManager = null;
@@ -22,9 +26,9 @@ public class BufferManager {
 	public ByteBuffer getPage(PageId pageId) {
 		int espace = Constants.FRAME_COUNT;
 
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i].getPin_count() == 0) {
-				if (!frames[i].isRefbit()) {
+		for (int i = 0; i < frames.size(); i++) {
+			if (frames.get(i).getPin_count() == 0) {
+				if (!frames.get(i).isRefbit()) {
 					espace = i;
 					break;
 				}
@@ -36,42 +40,43 @@ public class BufferManager {
 			return null;
 		} else {
 			try {
-				DiskManager.getInstance().readPage(pageId, frames[espace].getBuffer());
+				frames.get(espace).setFrame(pageId, frames.get(espace).getPin_count()+1, false);
+				DiskManager.getInstance().readPage(pageId, frames.get(espace).getBuffer());
+				System.out.println("page remplie dans le buffer");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			return frames[espace].getBuffer();
+			return frames.get(espace).getBuffer();
 
 		}
 	}
 
 	public void freePage(PageId pageId, boolean valdirty) {
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i].getPageId().equals(pageId)) {
-				frames[i].setPin_count(frames[i].getPin_count() - 1);
-				frames[i].setDirty(valdirty);
+		for (int i = 0; i < frames.size(); i++) {
+			if (frames.get(i).getPageId().equals(pageId)) {
+				frames.get(i).setPin_count(frames.get(i).getPin_count() - 1);
+				frames.get(i).setDirty(valdirty);
 			}
 		}
 	}
 
 	public void flushAll() {
 
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i].isDirty()) {
+		for (int i = 0; i < frames.size(); i++) {
+			if (frames.get(i).isDirty()) {
 				try {
-					DiskManager.getInstance().writePage(frames[i].getPageId(), frames[i].getBuffer());
+					DiskManager.getInstance().writePage(frames.get(i).getPageId(), frames.get(i).getBuffer());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				frames[i].setDirty(false);
+				frames.get(i).setDirty(false);
 			}
 		}
 		
-		for (int i = 0; i < frames.length; i++) {
-			frames[i].reset();
+		for (int i = 0; i < frames.size(); i++) {
+			frames.get(i).reset();
 		}
 
 	}
