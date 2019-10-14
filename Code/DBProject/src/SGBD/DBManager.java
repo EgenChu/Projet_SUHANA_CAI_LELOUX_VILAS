@@ -28,11 +28,12 @@ public class DBManager {
 	public void processCommand(String commande) {
 		StringTokenizer st = new StringTokenizer(commande);
 		
+		@SuppressWarnings("unused")
 		String command = st.nextToken();
 		
 		String relname = st.nextToken();
 		int numcol = Integer.parseInt(st.nextToken());
-		ArrayList list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<String>();
 		
 		while(st.hasMoreTokens()) {
 			list.add(st.nextToken());

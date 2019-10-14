@@ -7,8 +7,6 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		ByteBuffer buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-
 		PageId page = new PageId(1, 0);
 		PageId page2 = new PageId(1, 1);
 		PageId page3 = new PageId(1, 2);
