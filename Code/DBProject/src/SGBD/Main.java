@@ -2,57 +2,89 @@ package SGBD;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		PageId page = new PageId(1, 0);
-		PageId page2 = new PageId(1, 1);
-		PageId page3 = new PageId(1, 2);
+		/*
+		 * PageId page = new PageId(1, 0); PageId page2 = new PageId(1, 1); PageId page3
+		 * = new PageId(1, 2);
+		 */
 
-
-		try {
+/*		try {
 			DiskManager.getInstance().createFile(1);
-			DiskManager.getInstance().addPage(1);
-			DiskManager.getInstance().addPage(1);
-			DiskManager.getInstance().addPage(1);
-			DiskManager.getInstance().addPage(1);
-			DiskManager.getInstance().addPage(1);
-			
-			BufferManager.getInstance().getPage(page);
+			PageId page0 = DiskManager.getInstance().addPage(1);
+			PageId page1 = DiskManager.getInstance().addPage(1);
+			PageId page2 = DiskManager.getInstance().addPage(1);
+			PageId page3 = DiskManager.getInstance().addPage(1);
+			PageId page4 = DiskManager.getInstance().addPage(1);
+
+			System.out.println(page0);
+			System.out.println(page1);
+			System.out.println(page2);
+			System.out.println(page3);
+			System.out.println(page4);
+
+			BufferManager.getInstance().getPage(page0);
 			BufferManager.getInstance().getPage(page2);
-			ByteBuffer b = ByteBuffer.allocate(4);
-			b.put((byte)4);
-			b.rewind();
-			BufferManager.getInstance().frames.get(0).setBuffer(b);
-			BufferManager.getInstance().freePage(page, true);
-			BufferManager.getInstance().getPage(page3);
 
+			BufferManager.getInstance().getFrames().get(0).getBuffer().putChar(0,'c');
+			BufferManager.getInstance().getFrames().get(0).getBuffer().putChar(0,'C');
 
-			/*DiskManager.getInstance().readPage(page, buff);
-			page.setPageIdx(1);
-			DiskManager.getInstance().writePage(page, buff);*/
+			BufferManager.getInstance().freePage(page0, true);
+			BufferManager.getInstance().freePage(page2, true);
+			
+			BufferManager.getInstance().flushAll();
+			
+			
+			 * BufferManager.getInstance().getPage(page3);
+			 * BufferManager.getInstance().getPage(page4);
+			 * BufferManager.getInstance().freePage(page3, false);
+			 * BufferManager.getInstance().getPage(page0);
+			 
+			
+			
+			//System.out.println(BufferManager.getInstance().getFrames().get(0).getBuffer().getChar(0));
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
+			 * DiskManager.getInstance().readPage(page0, b); page0.setPageIdx(1);
+			 * DiskManager.getInstance().writePage(page0, b);
+			 
+
+		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		*/
 
-		ByteBuffer bf =ByteBuffer.allocate(9);
-		String s = "Hello";
-		
-		bf.putInt(3);
-		System.out.println(bf.position());
-		bf.put(s.getBytes());
-		System.out.println(bf.position());
-		
-	}
+		/*
+		 * ByteBuffer bf = ByteBuffer.allocate(9); String s = "Hello";
+		 * 
+		 * bf.putInt(3); System.out.println(bf.position()); bf.put(s.getBytes());
+		 * System.out.println(bf.position());
+		 */
 
-	public static String getName(int fileIdx) {
-		String sb = "../../DB/" + "Data_" + fileIdx + ".rf";
-		return sb;
+		/*
+		 * ByteBuffer bf = ByteBuffer.allocate(50);
+		 * 
+		 * String aze = "azerty"; ArrayList<String> list = new ArrayList<>();
+		 * list.add("int"); list.add("float"); list.add("string3"); list.add("string6");
+		 * 
+		 * RelDef reldef = new RelDef("nom",4,list);
+		 * 
+		 * Record record = new Record(reldef);
+		 * 
+		 * record.getValues().add("3"); record.getValues().add("5.f");
+		 * record.getValues().add("Hey"); record.getValues().add("Hello!");
+		 * 
+		 * 
+		 * record.writeToBuffer(bf, 4);
+		 * 
+		 * record.readFromBuffer(bf, 4);
+		 */
+
 	}
 
 }

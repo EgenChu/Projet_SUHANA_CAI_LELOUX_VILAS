@@ -5,8 +5,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class BufferManager {
-	// private Frame[] frames;
-	ArrayList<Frame> frames;
+	
+	private ArrayList<Frame> frames;
+
+	public ArrayList<Frame> getFrames() {
+		return frames;
+	}
 
 	private BufferManager() {
 		frames = new ArrayList<Frame>(Constants.FRAME_COUNT);

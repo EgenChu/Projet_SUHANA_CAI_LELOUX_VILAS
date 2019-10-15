@@ -30,7 +30,7 @@ public class PageId {
 
 		sb.append("pageId : ");
 		sb.append(getPageIdx());
-		sb.append("fileId: ");
+		sb.append(" fileId: ");
 		sb.append(getFileIdx());
 		
 		return sb.toString();
