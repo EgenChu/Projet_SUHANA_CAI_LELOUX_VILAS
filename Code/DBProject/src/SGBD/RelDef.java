@@ -31,16 +31,16 @@ public class RelDef {
 		return this.numcol;
 	}
 
-	public int getFileIdx() {
-		return fileIdx;
-	}
-
 	public int getSlotCount() {
 		return slotCount;
 	}	
 	
 	public String toString() {
 		return "*"+relname+"*"+numcol+"*"+list+"*"+fileIdx+"*"+recordSize+"*"+slotCount+"*";
+	}
+
+	public int getFileIdx() {
+		return fileIdx;
 	}
 	
 }

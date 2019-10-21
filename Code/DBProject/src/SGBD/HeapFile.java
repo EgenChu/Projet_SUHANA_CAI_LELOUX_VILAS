@@ -48,7 +48,7 @@ public class HeapFile {
 		int i = 4;
 		int pagelibre = 1, totalpage;
 		
-		PageId headerPage = new PageId(reldef.getFileIdx() , 0);
+		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
 		bf = BufferManager.getInstance().getPage(headerPage);
 		
 		totalpage = bf.getInt(0);
@@ -63,5 +63,7 @@ public class HeapFile {
 		else 
 			return new PageId(reldef.getFileIdx(),pagelibre);
 	}
+	
+	
 	
 }
