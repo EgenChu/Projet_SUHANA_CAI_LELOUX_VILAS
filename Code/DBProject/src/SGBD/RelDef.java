@@ -39,5 +39,8 @@ public class RelDef {
 		return slotCount;
 	}	
 	
+	public String toString() {
+		return "*"+relname+"*"+numcol+"*"+list+"*"+fileIdx+"*"+recordSize+"*"+slotCount+"*";
+	}
 	
 }

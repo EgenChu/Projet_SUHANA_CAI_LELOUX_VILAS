@@ -36,7 +36,19 @@ public class PageId {
 		return sb.toString();
 	}
 	
-	public boolean equals(PageId pageId) {
-		return ((this.fileIdx==pageId.fileIdx)&&(this.pageIdx==pageId.pageIdx));
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PageId other = (PageId) obj;
+		if (fileIdx != other.fileIdx)
+			return false;
+		if (pageIdx != other.pageIdx)
+			return false;
+		return true;
 	}
 }

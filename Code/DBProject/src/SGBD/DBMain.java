@@ -1,20 +1,21 @@
 package SGBD;
 
+import java.io.IOException;
+
 public class DBMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		DBManager dbManager = DBManager.getInstance();
-		dbManager.init();
+		DBManager.getInstance().init();
 		
 		while(true){
 			String chaine = Saisie.lireChaine(null);
 			if(chaine.equalsIgnoreCase("exit")) {
-				dbManager.finish();
+				DBManager.getInstance().finish();
 				break;
 			}
 			else
-				dbManager.processCommand(chaine);
+				DBManager.getInstance().processCommand(chaine);
 		}
 	}
 

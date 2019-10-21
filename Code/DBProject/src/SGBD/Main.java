@@ -1,15 +1,9 @@
 package SGBD;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 public class Main {
 
 	public static void main(String[] args) {
-
+		Constants.PATH = args[0]; 
 		/*
 		 * PageId page = new PageId(1, 0); PageId page2 = new PageId(1, 1); PageId page3
 		 * = new PageId(1, 2);
