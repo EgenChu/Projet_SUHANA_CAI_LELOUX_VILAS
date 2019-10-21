@@ -1,11 +1,7 @@
 package SGBD;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,10 +96,9 @@ public class HeapFile {
 		List<Record> rec = new ArrayList<Record>();
 		ByteBuffer buff = BufferManager.getInstance().getPage(p);
 		for (int i = reldef.getSlotCount();i<Constants.PAGE_SIZE; i+= reldef.getRecordSize()) {
-			rec.
-			
+			rec.get(0).readFromBuffer(buff, i);
 		}
-		
+		return rec;
 	}
 	
 }

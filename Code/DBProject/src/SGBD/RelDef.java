@@ -22,9 +22,7 @@ public class RelDef {
 		this.recordSize = recordSize;
 		this.slotCount = slotCount;
 	}
-		public int getRecordSize() {
-		return recordSize;
-	}
+
 	public List<String> getList() {
 		return this.list;
 	}
