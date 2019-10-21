@@ -1,5 +1,6 @@
 package SGBD;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -16,13 +17,13 @@ public class DBManager {
 		return dbManager ;
 	}
 
-	public void init() {
-		DBDef.init();
+	public void init() throws IOException {
+		DBDef.getInstance().init();
 	}
 
-	public void finish() {
+	public void finish() throws IOException {
 		BufferManager.getInstance().flushAll();
-		DBDef.finish();
+		DBDef.getInstance().finish();
 	}
 
 	public void processCommand(String commande) {
