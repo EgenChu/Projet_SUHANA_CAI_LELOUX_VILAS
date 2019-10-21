@@ -1,10 +1,10 @@
-import SGBD;
+package SGBD;
 
-public class Rid {
+public class RId {
 	private PageId pageId;
 	private int slotIdx;
 	
-	public Rid(PageId pageId, int slotIdx) {
+	public RId(PageId pageId, int slotIdx) {
 		this.pageId = pageId;
 		this.slotIdx = slotIdx;
 	}
@@ -13,7 +13,7 @@ public class Rid {
 		return pageId;
 	}
 	
-	public Int getSlotIdx() {
+	public int getSlotIdx() {
 		return slotIdx;
 	}
 }
