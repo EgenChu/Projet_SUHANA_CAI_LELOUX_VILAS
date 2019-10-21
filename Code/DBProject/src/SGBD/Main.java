@@ -84,6 +84,17 @@ public class Main {
 		 * 
 		 * record.readFromBuffer(bf, 4);
 		 */
+		
+		/*
+		 * ByteBuffer bf = ByteBuffer.allocate(12); StringBuffer sb = new
+		 * StringBuffer();
+		 * 
+		 * for (int i = 0; i < 12; i += Integer.BYTES) { bf.putInt(i, 0); }
+		 * 
+		 * for (int i = 0; i < 12; i += Integer.BYTES) { sb.append(bf.getInt(i)); }
+		 * 
+		 * System.out.println(sb.toString());
+		 */
 
 	}
 

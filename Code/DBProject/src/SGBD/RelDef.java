@@ -2,8 +2,7 @@ package SGBD;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+
 
 public class RelDef {
 
@@ -30,6 +29,14 @@ public class RelDef {
 
 	public int getNumcol() {
 		return this.numcol;
+	}
+
+	public int getFileIdx() {
+		return fileIdx;
+	}
+
+	public int getSlotCount() {
+		return slotCount;
 	}	
 	
 	
