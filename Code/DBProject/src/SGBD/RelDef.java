@@ -32,5 +32,8 @@ public class RelDef {
 		return this.numcol;
 	}	
 	
+	public String toString() {
+		return "*"+relname+"*"+numcol+"*"+list+"*"+fileIdx+"*"+recordSize+"*"+slotCount+"*";
+	}
 	
 }

@@ -1,4 +1,9 @@
 package SGBD;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 import java.util.*;
 
 public class DBDef
@@ -20,12 +25,20 @@ public class DBDef
     {   return DBDef;
     }
     
-    public static void init() {
+    public static void init() throws IOException {
+    	BufferManager.getInstance().flushAll();
+    	File fichier = new File(Constants.PATH+"/Catalogue.def");
+		RandomAccessFile f = new RandomAccessFile(fichier, "r");
+		f.re
     	
     }
     
-    public static void finish() {
-    	
+    public static void finish() throws IOException {
+    	BufferManager.getInstance().flushAll();
+    	File fichier = new File(Constants.PATH+"/Catalogue.def");
+		RandomAccessFile f = new RandomAccessFile(fichier, "w");
+		f.writeChars(Integer.toString(DBDef.compteur)+DBDef.listRel.toString());
+		f.close();
     }
     
     public  void addRelation(RelDef a) {
