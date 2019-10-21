@@ -43,4 +43,9 @@ public class RelDef {
 		return fileIdx;
 	}
 	
+	public int getRecordSize() {
+		return recordSize;
+	}
+
+	
 }
