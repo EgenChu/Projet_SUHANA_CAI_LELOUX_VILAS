@@ -43,7 +43,6 @@ public class Record {
 			} else if (string.startsWith("string")) {
 				StringTokenizer st = new StringTokenizer(string, "string");
 				int sizeString = Integer.parseInt(st.nextToken().toString());
-				
 				for (int j = 0; j < sizeString; j++) {
 					buffer.putChar(position, values.get(i).charAt(j));
 					position += Character.BYTES;
