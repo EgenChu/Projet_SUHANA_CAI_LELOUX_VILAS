@@ -73,12 +73,12 @@ public class DiskManager {
 	}
 	
 	private String getName(PageId p) {
-		String sb = "../../DB/" + "Data_" + p.getFileIdx() + ".rf";
+		String sb = Constants.PATH + "Data_" + p.getFileIdx() + ".rf";
 		return sb;
 	}
 	
 	private String getName(int fileIdx) {
-		String sb = "../../DB/" + "Data_" + fileIdx + ".rf";
+		String sb = Constants.PATH + "Data_" + fileIdx + ".rf";
 		return sb;
 	}
 

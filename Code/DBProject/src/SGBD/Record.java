@@ -1,7 +1,6 @@
 package SGBD;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -14,6 +13,14 @@ public class Record {
 	public Record(RelDef reldef) {
 		this.reldef = reldef;
 		values = new ArrayList<>();
+	}
+
+	public RelDef getReldef() {
+		return reldef;
+	}
+
+	public void setReldef(RelDef reldef) {
+		this.reldef = reldef;
 	}
 
 	public List<String> getValues() {
@@ -56,24 +63,25 @@ public class Record {
 
 			if (string.startsWith("int")) {
 //				System.out.println(buffer.getInt(position));
-				buffer.getInt(position);
+				values.add(Integer.toString(buffer.getInt(position)));
 				position += Integer.BYTES;
 
 			} else if (string.startsWith("float")) {
 				buffer.getFloat(position);
-//				System.out.println(buffer.getFloat(position));
+				values.add(Float.toString(buffer.getFloat(position)));
 				position += Float.BYTES;
 			} else if (string.startsWith("string")) {
 
 				StringTokenizer st = new StringTokenizer(string, "string");
 				int sizeString = Integer.parseInt(st.nextToken().toString());
-
+				StringBuffer sb = new StringBuffer();
+				
 				for (int j = 0; j < sizeString; j++) {
-//					System.out.println(buffer.getChar(position)); 
-					buffer.getChar(position);
+					sb.append(buffer.getChar(position));
 					position += Character.BYTES;
 				}
-
+				
+				values.add(sb.toString());
 			}
 		}
 
