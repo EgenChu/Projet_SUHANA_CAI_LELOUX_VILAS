@@ -1,7 +1,6 @@
 package SGBD;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -14,6 +13,14 @@ public class Record {
 	public Record(RelDef reldef) {
 		this.reldef = reldef;
 		values = new ArrayList<>();
+	}
+
+	public RelDef getReldef() {
+		return reldef;
+	}
+
+	public void setReldef(RelDef reldef) {
+		this.reldef = reldef;
 	}
 
 	public List<String> getValues() {

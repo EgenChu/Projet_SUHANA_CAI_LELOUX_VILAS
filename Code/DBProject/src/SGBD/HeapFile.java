@@ -1,7 +1,13 @@
 package SGBD;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HeapFile {
 
@@ -89,5 +95,15 @@ public class HeapFile {
 		
 		return new Rid(pageId,indiceCaseLibre);
 	}
-
+	
+	public List<Record> getRecordsInDataPage(PageId p) throws IOException{
+		List<Record> rec = new ArrayList<Record>();
+		ByteBuffer buff = BufferManager.getInstance().getPage(p);
+		for (int i = reldef.getSlotCount();i<Constants.PAGE_SIZE; i+= reldef.getRecordSize()) {
+			rec.
+			
+		}
+		
+	}
+	
 }
