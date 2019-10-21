@@ -35,7 +35,9 @@ public class Record {
 				position += Float.BYTES;
 			} else if (string.startsWith("string")) {
 				StringTokenizer st = new StringTokenizer(string, "string");
-				for (int j = 0; j < values.get(i).length(); j++) {
+				int sizeString = Integer.parseInt(st.nextToken().toString());
+				
+				for (int j = 0; j < sizeString; j++) {
 					buffer.putChar(position, values.get(i).charAt(j));
 					position += Character.BYTES;
 				}
