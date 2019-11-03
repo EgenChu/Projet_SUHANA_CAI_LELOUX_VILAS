@@ -62,13 +62,13 @@ public class Record {
 
 			if (string.startsWith("int")) {
 //				System.out.println(buffer.getInt(position));
-				values.add(Integer.toString(buffer.getInt(position)));
+				values.add(i,Integer.toString(buffer.getInt(position)));
 				position += Integer.BYTES;
 
 			} else if (string.startsWith("float")) {
-				buffer.getFloat(position);
-				values.add(Float.toString(buffer.getFloat(position)));
+				values.add(i,Float.toString(buffer.getFloat(position)));
 				position += Float.BYTES;
+			
 			} else if (string.startsWith("string")) {
 
 				StringTokenizer st = new StringTokenizer(string, "string");
@@ -80,7 +80,7 @@ public class Record {
 					position += Character.BYTES;
 				}
 				
-				values.add(sb.toString());
+				values.add(i,sb.toString());
 			}
 		}
 

@@ -93,9 +93,9 @@ public class HeapFile {
 	}
 	
 	public List<Record> getRecordsInDataPage(PageId p) throws IOException{
-		List<Record> rec = new ArrayList<Record>();
+		List<Record> rec = new ArrayList<>();
 		ByteBuffer buff = BufferManager.getInstance().getPage(p);
-		for (int i = reldef.getSlotCount();i<Constants.PAGE_SIZE; i+= reldef.getRecordSize()) {
+		for (int i = reldef.getSlotCount(); i<Constants.PAGE_SIZE; i+= reldef.getRecordSize()) {
 			rec.get(0).readFromBuffer(buff, i);
 		}
 		return rec;

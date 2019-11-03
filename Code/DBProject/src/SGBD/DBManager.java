@@ -47,6 +47,7 @@ public class DBManager {
 
 	public void creatRelation(String relname, int numcol, ArrayList<String> list) {
 		int recordSize = 0;
+		
 		for (int i = 0; i < numcol; i++) {
 			String string = list.get(i);
 			if (string.startsWith("int")) {
@@ -54,13 +55,14 @@ public class DBManager {
 			} else if (string.startsWith("float")) {
 				recordSize += Float.BYTES;
 			} else if (string.startsWith("string")) {
-				StringTokenizer st = new StringTokenizer(string, "string");
-				recordSize+= 2*Integer.parseInt(st.nextToken());
+				recordSize+= Character.BYTES*Integer.parseInt(string.split("string")[1]);
 			}
 
 		}
+		
 		int slotCount = Constants.PAGE_SIZE/(recordSize +1);
 		RelDef reldef = new RelDef(relname, numcol, list, DBDef.getInstance().compteur, recordSize, slotCount);
+		
 		DBDef.getInstance().addRelation(reldef);
 	}
 

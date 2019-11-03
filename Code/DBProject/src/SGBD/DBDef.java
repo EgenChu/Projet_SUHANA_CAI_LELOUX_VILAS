@@ -19,8 +19,8 @@ public class DBDef
     
      
     /** Point d'accès pour l'instance unique du singleton */
-    public static DBDef getInstance()
-    {   return DBDef;
+    public static DBDef getInstance() {   
+    	return DBDef;
     }
     
     public void init() throws IOException {

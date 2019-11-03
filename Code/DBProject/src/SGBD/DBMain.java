@@ -5,16 +5,15 @@ import java.io.IOException;
 public class DBMain {
 
 	public static void main(String[] args) throws IOException {
-		Constants.PATH = args[0]; 
+		Constants.PATH = args[0];
 		DBManager.getInstance().init();
-		
-		while(true){
+
+		while (true) {
 			String chaine = Saisie.lireChaine(null);
-			if(chaine.equalsIgnoreCase("exit")) {
+			if (chaine.equalsIgnoreCase("exit")) {
 				DBManager.getInstance().finish();
 				break;
-			}
-			else
+			} else
 				DBManager.getInstance().processCommand(chaine);
 		}
 	}

@@ -2,6 +2,7 @@ package SGBD;
 
 import java.io.RandomAccessFile;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -44,7 +45,7 @@ public class DiskManager {
 		return p;
 	}
 
-	public void readPage(PageId p, ByteBuffer buff) throws IOException {
+	public void readPage(PageId p, ByteBuffer buff) throws FileNotFoundException, IOException     {
 		File fichier = new File(getName(p));
 		RandomAccessFile f = new RandomAccessFile(fichier, "r");
 		FileChannel channel = f.getChannel();

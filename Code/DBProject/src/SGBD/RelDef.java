@@ -34,7 +34,8 @@ public class RelDef {
 	public int getSlotCount() {
 		return slotCount;
 	}	
-	
+
+	@Override
 	public String toString() {
 		return "*"+relname+"*"+numcol+"*"+list+"*"+fileIdx+"*"+recordSize+"*"+slotCount+"*";
 	}
