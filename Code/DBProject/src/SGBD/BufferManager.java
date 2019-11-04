@@ -8,9 +8,6 @@ public class BufferManager {
 	
 	private ArrayList<Frame> frames;
 
-	public ArrayList<Frame> getFrames() {
-		return frames;
-	}
 
 	private BufferManager() {
 		frames = new ArrayList<Frame>(Constants.FRAME_COUNT);
@@ -90,5 +87,16 @@ public class BufferManager {
 		}
 
 	}
+	
+	public ArrayList<Frame> getFrames() {
+		return frames;
+	}
+	
+	public void reset() {
+		for(int i =0; i < frames.size();i++) {
+		frames.get(i).reset();
+		}
+	}
+
 
 }

@@ -3,7 +3,7 @@ package SGBD;
 public class Main {
 
 	public static void main(String[] args) {
-//		Constants.PATH = args[0]; 
+	Constants.PATH = args[0]; 
 		
 /*		  PageId page = new PageId(1, 0); 
 		  PageId page2 = new PageId(1, 1); 

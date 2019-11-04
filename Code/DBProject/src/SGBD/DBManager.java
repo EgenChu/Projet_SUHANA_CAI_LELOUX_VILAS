@@ -1,7 +1,10 @@
 package SGBD;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class DBManager {
@@ -30,7 +33,7 @@ public class DBManager {
 	public void processCommand(String commande) throws IOException {
 		StringTokenizer st = new StringTokenizer(commande);
 
-		@SuppressWarnings("unused")
+
 		String command = st.nextToken();
 
 		String relname = st.nextToken();
@@ -69,8 +72,44 @@ public class DBManager {
 	}
 	
 	private void clean() {
+		File fichier = new File(Constants.PATH+"/Catalogue.def");
+		fichier.delete();
+		boolean test= true;
+		int i = 0;
+		while(test){
+		File fichier2 = new File(Constants.PATH+"/Data_"+i+".rf");
+		test = fichier2.delete();
+		i++;
+		}
+		BufferManager.getInstance().reset();;
+		DBDef.getInstance().reset();
+		FileManager.getInstance().reset();
+	}
+	
+	private void selectAll(String relName) throws IOException {
+		List<Record> list = FileManager.getInstance().selectAllFromRelation(relName);
+		for(int i = 0 ; i < list.size();i++) {
+		System.out.println(list.get(i));
+		}
+		System.out.println("Total records = "+list.size());
 		
 	}
-
+	
+	public void selectAll(String relName, int idxCol, String valeur) throws IOException {
+		List<Record> list = FileManager.getInstance().selectFromRelation(relName, idxCol, valeur);
+		for(int i = 0 ; i < list.size();i++) {
+		System.out.println(list.get(i));
+		}
+		System.out.println("Total records = "+list.size());
+	}
+	
+	public void delete(String relName, int idxCol, String valeur) throws IOException {
+		List<Record> list = FileManager.getInstance().selectFromRelation(relName, idxCol, valeur);
+		int totalDel = list.size();
+		for(int i = 0 ; i < list.size();i++) {
+		System.out.println(list.get(i));
+		}
+		System.out.println("Total records = "+ totalDel);
+	}
 
 }

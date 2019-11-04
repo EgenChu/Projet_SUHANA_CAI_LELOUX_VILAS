@@ -64,5 +64,9 @@ public class FileManager {
 		return list2;
 	}
 	
+	public void reset() {
+		heapFiles = new ArrayList <HeapFile>();
+	}
+	
 
 }
