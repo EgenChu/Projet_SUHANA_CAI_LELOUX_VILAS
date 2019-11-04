@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-	private ArrayList<HeapFile> heapFiles;
+	
+	private List<HeapFile> heapFiles;
 	
 	private FileManager() {
+		heapFiles = new ArrayList<>();
 	}
 	
 	private static FileManager fileManager = null;
@@ -25,7 +27,7 @@ public class FileManager {
 	}
 	
 	public void CreateRelationFile(RelDef relDef) throws IOException {
-		HeapFile hF =new HeapFile(relDef);
+		HeapFile hF = new HeapFile(relDef);
 		heapFiles.add(hF);
 		hF.createNewOndisk();
 	}
@@ -42,21 +44,23 @@ public class FileManager {
 	}
 	
 	public List<Record> selectAllFromRelation(String relName) throws IOException{
-		List<Record> list = new ArrayList<Record>();
+		List<Record> list = null;
 		for(int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
-				list =heapFiles.get(i).getAllRecords();
+				list = heapFiles.get(i).getAllRecords();
 			}
 		return list;
 	}
 	
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur) throws IOException{
-		List<Record> list = new ArrayList<Record>();
+		List<Record> list = null;
 		List<Record> list2 = new ArrayList<Record>();
+		
 		for(int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
-				list =heapFiles.get(i).getAllRecords();
+				list = heapFiles.get(i).getAllRecords();
 			}
+		
 		for(int i = 0; i<list.size();i++) {
 			if(list.get(i).getValues().get(idxCol).equals(valeur))
 				list2.add(list.get(i));
