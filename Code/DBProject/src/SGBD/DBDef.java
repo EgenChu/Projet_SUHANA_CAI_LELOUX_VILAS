@@ -68,6 +68,6 @@ public class DBDef
 	
 	public void reset() {
 		this.compteur=0;
-		listRel = new ArrayList <RelDef>();
+		listRel.clear();
 	}
 }
