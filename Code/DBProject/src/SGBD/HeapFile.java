@@ -71,16 +71,16 @@ public class HeapFile {
 		ByteBuffer bf;
 		int indiceCaseLibre = 0;
 		bf = BufferManager.getInstance().getPage(pageId);
-		
-		while(bf.get(indiceCaseLibre) != 0) {
+
+		while (bf.get(indiceCaseLibre) != 0) {
 			indiceCaseLibre++;
 		}
-		
+
 		record.writeToBuffer(bf, indiceCaseLibre * reldef.getRecordSize() + reldef.getSlotCount());
-		bf.put(indiceCaseLibre,(byte) 1);
-		
+		bf.put(indiceCaseLibre, (byte) 1);
+
 		BufferManager.getInstance().freePage(pageId, true);
-		
+
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
 		bf = BufferManager.getInstance().getPage(headerPage);
 
@@ -88,17 +88,53 @@ public class HeapFile {
 		bf.putInt(pageId.getPageIdx(), valeur_pagemodif);
 
 		BufferManager.getInstance().freePage(headerPage, true);
-		
-		return new Rid(pageId,indiceCaseLibre);
+
+		return new Rid(pageId, indiceCaseLibre);
 	}
-	
-	public List<Record> getRecordsInDataPage(PageId p) throws IOException{
-		List<Record> rec = new ArrayList<>();
+
+	public List<Record> getRecordsInDataPage(PageId p) throws IOException {
+		List<Record> listrec = new ArrayList<>();
 		ByteBuffer buff = BufferManager.getInstance().getPage(p);
-		for (int i = reldef.getSlotCount(); i<Constants.PAGE_SIZE; i+= reldef.getRecordSize()) {
-			rec.get(0).readFromBuffer(buff, i);
+		Record temp = new Record(this.reldef);
+		for (int i = reldef.getSlotCount(); i < Constants.PAGE_SIZE; i += reldef.getRecordSize()) {
+			temp.getValues().clear();
+			temp.readFromBuffer(buff, i);
+			listrec.add(temp);
 		}
-		return rec;
+		return listrec;
 	}
-	
+
+	public Rid insertRecord(Record record) throws IOException {
+		PageId libre = getFreeDataPageId();
+
+		if (libre != null) {
+			return writeRecordToDataPage(record, libre);
+		} else {
+			addDataPage();
+			libre = getFreeDataPageId();
+			return writeRecordToDataPage(record, libre);
+		}
+	}
+
+	public List<Record> getAllRecords() throws IOException {
+		List<Record> listrec = new ArrayList<>();
+		List<Record> listPerPage ;
+		
+		PageId header = new PageId(reldef.getFileIdx(),0);
+		ByteBuffer buff = BufferManager.getInstance().getPage(header);
+		
+		int nbDataPage = buff.getInt(0);
+		
+		for(int i = 1; i < nbDataPage + 1; i++) {
+			PageId pageCourant = new PageId(reldef.getFileIdx(),i);
+			
+			listPerPage = getRecordsInDataPage(pageCourant);
+			
+			for(int j = 0; j < listPerPage.size(); j++) {
+				listrec.add(listPerPage.get(j));
+			}
+		}
+		return listrec;
+	}
+
 }
