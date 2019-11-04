@@ -7,18 +7,6 @@ import java.util.*;
 public class DBDef
 {   
 	private List<RelDef> listRel;
-	public List<RelDef> getListRel() {
-		return listRel;
-	}
-
-	public int getCompteur() {
-		return compteur;
-	}
-
-	public static DBDef getDBDef() {
-		return DBDef;
-	}
-
 	private int compteur = 0;
     
 	/** Constructeur privé */
@@ -68,5 +56,18 @@ public class DBDef
     public void addRelation(RelDef a) {
     	compteur++;
     	listRel.add(a);
-    }
+    } 
+	
+	public List<RelDef> getListRel() {
+		return listRel;
+	}
+
+	public int getCompteur() {
+		return compteur;
+	}
+	
+	public void reset() {
+		this.compteur=0;
+		listRel = new ArrayList <RelDef>();
+	}
 }

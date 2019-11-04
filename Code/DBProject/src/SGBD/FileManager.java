@@ -73,6 +73,10 @@ public class FileManager {
 		return list2;
 	}
 	
+	public void reset() {
+		heapFiles = new ArrayList <HeapFile>();
+	}
+	
 	public void insert(String nomRelation, List<String> values) throws IOException {
 		Record record = null;
 		RelDef relation = null;

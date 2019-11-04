@@ -85,5 +85,14 @@ public class Record {
 		}
 
 	}
+	
+	public String toString() {
+		StringBuffer bf = new StringBuffer();
+		for(int i = 0; i < values.size()-1;i++) {
+			bf.append(values.get(i) + " ; ");
+		}
+		bf.append(values.get(values.size()));
+		return bf.toString();
+	}
 
 }
