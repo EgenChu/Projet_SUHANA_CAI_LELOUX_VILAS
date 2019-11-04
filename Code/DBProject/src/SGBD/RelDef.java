@@ -47,6 +47,9 @@ public class RelDef {
 	public int getRecordSize() {
 		return recordSize;
 	}
-
+	
+	public String getRelname() {
+		return relname;
+	}
 	
 }

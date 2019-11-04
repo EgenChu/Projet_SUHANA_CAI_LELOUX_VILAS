@@ -19,6 +19,7 @@ public class DBManager {
 
 	public void init() throws IOException {
 		DBDef.getInstance().init();
+		FileManager.getInstance().init();
 	}
 
 	public void finish() throws IOException {
@@ -26,7 +27,7 @@ public class DBManager {
 		DBDef.getInstance().finish();
 	}
 
-	public void processCommand(String commande) {
+	public void processCommand(String commande) throws IOException {
 		StringTokenizer st = new StringTokenizer(commande);
 
 		@SuppressWarnings("unused")
@@ -45,7 +46,7 @@ public class DBManager {
 
 	}
 
-	public void creatRelation(String relname, int numcol, ArrayList<String> list) {
+	public void creatRelation(String relname, int numcol, ArrayList<String> list) throws IOException {
 		int recordSize = 0;
 		
 		for (int i = 0; i < numcol; i++) {
@@ -61,9 +62,14 @@ public class DBManager {
 		}
 		
 		int slotCount = Constants.PAGE_SIZE/(recordSize +1);
-		RelDef reldef = new RelDef(relname, numcol, list, DBDef.getInstance().compteur, recordSize, slotCount);
+		RelDef reldef = new RelDef(relname, numcol, list, DBDef.getInstance().getCompteur(), recordSize, slotCount);
 		
 		DBDef.getInstance().addRelation(reldef);
+		FileManager.getInstance().CreateRelationFile(reldef);
+	}
+	
+	private void clean() {
+		
 	}
 
 
