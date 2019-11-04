@@ -1,11 +1,6 @@
 package SGBD;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,33 +69,13 @@ public class FileManager {
 	}
 	
 	public void reset() {
-		heapFiles = new ArrayList <HeapFile>();
-	}
-	
-	public void insert(String nomRelation, List<String> values) throws IOException {
-		Record record = null;
-		RelDef relation = null;
-		
-		for(int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(nomRelation)) 
-				relation = heapFiles.get(i).getReldef();
-			}
-		
-		record = new Record(relation);
-		this.insertRecordInRelation(record, relation.getRelname());
+		heapFiles.clear();
 	}
 
-	public void insertAll(String nomRelation, String fileName) throws FileNotFoundException {
-		FileReader fichier = new FileReader(Constants.PATH+"/../" + fileName);
-		BufferedReader br = new BufferedReader(fichier);
-		
-		RelDef relation = null;
-		
-		for(int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(nomRelation)) 
-				relation = heapFiles.get(i).getReldef();
-			}
-		
-		
+	public List<HeapFile> getHeapFiles() {
+		return heapFiles;
 	}
+	
+	
+	
 }
