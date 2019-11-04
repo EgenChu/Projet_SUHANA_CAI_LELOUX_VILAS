@@ -1,6 +1,11 @@
 package SGBD;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,4 +90,17 @@ public class FileManager {
 		this.insertRecordInRelation(record, relation.getRelname());
 	}
 
+	public void insertAll(String nomRelation, String fileName) throws FileNotFoundException {
+		FileReader fichier = new FileReader(Constants.PATH+"/../" + fileName);
+		BufferedReader br = new BufferedReader(fichier);
+		
+		RelDef relation = null;
+		
+		for(int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(nomRelation)) 
+				relation = heapFiles.get(i).getReldef();
+			}
+		
+		
+	}
 }
