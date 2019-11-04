@@ -30,7 +30,7 @@ public class FileManager {
 		hF.createNewOndisk();
 	}
 	
-	public Rid insertRecordInRelation(Record record ,String relName) {
+	public Rid insertRecordInRelation(Record record ,String relName) throws IOException {
 		Rid rid = null;
 		for(int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) {
@@ -41,7 +41,7 @@ public class FileManager {
 		return rid;
 	}
 	
-	public List<Record> selectAllFromRelation(String relName){
+	public List<Record> selectAllFromRelation(String relName) throws IOException{
 		List<Record> list = new ArrayList<Record>();
 		for(int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
@@ -50,7 +50,7 @@ public class FileManager {
 		return list;
 	}
 	
-	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
+	public List<Record> selectFromRelation(String relName, int idxCol, String valeur) throws IOException{
 		List<Record> list = new ArrayList<Record>();
 		List<Record> list2 = new ArrayList<Record>();
 		for(int i = 0; i < heapFiles.size(); i++) {
