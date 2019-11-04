@@ -74,7 +74,7 @@ public class FileManager {
 	}
 	
 	public void reset() {
-		heapFiles = new ArrayList <HeapFile>();
+		heapFiles.clear();
 	}
 	
 	public void insert(String nomRelation, List<String> values) throws IOException {
