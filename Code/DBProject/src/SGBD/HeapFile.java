@@ -101,4 +101,12 @@ public class HeapFile {
 		return rec;
 	}
 	
+	public Rid insertRecord(Record record) {
+		
+	}
+	
+	public List<Record> getAllRecords(){
+		
+	}
+	
 }

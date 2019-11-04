@@ -6,8 +6,20 @@ import java.util.*;
 
 public class DBDef
 {   
-	List<RelDef> listRel;
-	int compteur = 0;
+	private List<RelDef> listRel;
+	public List<RelDef> getListRel() {
+		return listRel;
+	}
+
+	public int getCompteur() {
+		return compteur;
+	}
+
+	public static DBDef getDBDef() {
+		return DBDef;
+	}
+
+	private int compteur = 0;
     
 	/** Constructeur privé */
     private DBDef(){
@@ -28,7 +40,7 @@ public class DBDef
     	File fichier = new File(Constants.PATH+"/Catalogue.def");
 		RandomAccessFile f = new RandomAccessFile(fichier, "r");
 		StringTokenizer st = new StringTokenizer(f.readUTF(),"*");
-		DBDef.compteur = Integer.parseInt(st.nextToken());
+		this.compteur = Integer.parseInt(st.nextToken());
 		while(st.hasMoreTokens()) {
 			String relname = st.nextToken();
 			int numcol =Integer.parseInt(st.nextToken());
