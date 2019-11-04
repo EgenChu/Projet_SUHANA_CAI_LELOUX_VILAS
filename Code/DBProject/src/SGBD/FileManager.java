@@ -68,5 +68,17 @@ public class FileManager {
 		return list2;
 	}
 	
+	public void insert(String nomRelation, List<String> values) throws IOException {
+		Record record = null;
+		RelDef relation = null;
+		
+		for(int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(nomRelation)) 
+				relation = heapFiles.get(i).getReldef();
+			}
+		
+		record = new Record(relation);
+		this.insertRecordInRelation(record, relation.getRelname());
+	}
 
 }

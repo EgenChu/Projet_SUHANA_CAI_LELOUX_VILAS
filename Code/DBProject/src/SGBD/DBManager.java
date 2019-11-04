@@ -2,6 +2,7 @@ package SGBD;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class DBManager {
@@ -29,24 +30,38 @@ public class DBManager {
 
 	public void processCommand(String commande) throws IOException {
 		StringTokenizer st = new StringTokenizer(commande);
+		String nomCommand = st.nextToken();
+		String relname;
+		
+		switch(nomCommand) {
+			case "create":
+				relname = st.nextToken();
+				int numcol = Integer.parseInt(st.nextToken());
+				List<String> list = new ArrayList<String>();
 
-		@SuppressWarnings("unused")
-		String command = st.nextToken();
+				while(st.hasMoreTokens()) {
+					list.add(st.nextToken());
+				}
 
-		String relname = st.nextToken();
-		int numcol = Integer.parseInt(st.nextToken());
-		ArrayList<String> list = new ArrayList<String>();
-
-		while(st.hasMoreTokens()) {
-			list.add(st.nextToken());
+				creatRelation(relname,numcol,list);
+				break;
+			
+			case "insert": 
+				relname = st.nextToken();
+				List<String> listValues = new ArrayList<String>();
+				while(st.hasMoreTokens()) {
+					listValues.add(st.nextToken());
+				}
+				FileManager.getInstance().insert(relname, listValues);
+				break;
 		}
 
-		creatRelation(relname,numcol,list);
+		
 
 
 	}
 
-	public void creatRelation(String relname, int numcol, ArrayList<String> list) throws IOException {
+	public void creatRelation(String relname, int numcol, List<String> list) throws IOException {
 		int recordSize = 0;
 		
 		for (int i = 0; i < numcol; i++) {

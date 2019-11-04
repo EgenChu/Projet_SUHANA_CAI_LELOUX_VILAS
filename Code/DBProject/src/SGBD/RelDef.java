@@ -1,6 +1,5 @@
 package SGBD;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,7 +13,7 @@ public class RelDef {
 	private int slotCount;
 
 
-	public RelDef(String relname, int numcol, ArrayList<String> list,int fileIdx, int recordSize, int slotCount) {
+	public RelDef(String relname, int numcol, List<String> list,int fileIdx, int recordSize, int slotCount) {
 		this.relname = relname;
 		this.numcol = numcol;
 		this.list = list ;
