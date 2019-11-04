@@ -2,7 +2,6 @@ package SGBD;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -56,6 +55,20 @@ public class DBManager {
 				}
 				FileManager.getInstance().insert(relname, listValues);
 				break;
+			case "clean":
+				clean();
+				break;
+			case "selectall":
+				relname = st.nextToken();
+				if (st.hasMoreTokens()) {
+					select(relname,Integer.parseInt(st.nextToken()),st.nextToken());
+				}
+				else {
+					selectAll(relname);
+				}
+				break;
+					
+			
 		}
 
 		
@@ -109,7 +122,7 @@ public class DBManager {
 		
 	}
 	
-	public void selectAll(String relName, int idxCol, String valeur) throws IOException {
+	public void select(String relName, int idxCol, String valeur) throws IOException {
 		List<Record> list = FileManager.getInstance().selectFromRelation(relName, idxCol, valeur);
 		for(int i = 0 ; i < list.size();i++) {
 		System.out.println(list.get(i));
