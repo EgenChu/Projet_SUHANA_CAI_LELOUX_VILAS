@@ -46,7 +46,7 @@ public class DBManager {
 			while (st.hasMoreTokens()) {
 				list.add(st.nextToken());
 			}
-
+ 
 			creatRelation(relname, numcol, list);
 			break;
 
@@ -58,16 +58,15 @@ public class DBManager {
 			}
 			insert(relname, listValues);
 			break;
+		
 		case "clean":
 			clean();
 			break;
+		
 		case "selectall":
 			relname = st.nextToken();
-			if (st.hasMoreTokens()) {
-				select(relname, Integer.parseInt(st.nextToken()), st.nextToken());
-			} else {
-				selectAll(relname);
-			}
+			if (st.hasMoreTokens()) select(relname, Integer.parseInt(st.nextToken()), st.nextToken());
+			 else selectAll(relname);
 			break;
 
 		}
@@ -147,7 +146,7 @@ public class DBManager {
 				relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
 		}
 
-		record = new Record(relation);
+		record = new Record(relation,values);
 		FileManager.getInstance().insertRecordInRelation(record, relation.getRelname());
 	}
 

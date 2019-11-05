@@ -39,7 +39,7 @@ public class DiskManager {
 		f.setLength(f.length() + Constants.PAGE_SIZE);
 //		System.out.println(f.length() + ": size after effect");
 		
-		PageId p = new PageId(fileIdx, (int) ((f.length() / Constants.PAGE_SIZE) - 1));
+		PageId p = new PageId(fileIdx,  (int) ((f.length() / Constants.PAGE_SIZE) - 1));
 		f.close();
 
 		return p;
@@ -52,7 +52,7 @@ public class DiskManager {
 
 //		FileChannel.open(Path.of(, more), StandardOpenOption.READ)();
 		int nmbbyte = channel.read(buff, p.getPageIdx() * Constants.PAGE_SIZE);
-		System.out.println(nmbbyte);
+//		System.out.println(nmbbyte);
 //		f.readFully(buff, p.getPageIdx()*Constants.pageSize, Constants.pageSize);
 		
 		channel.close();
@@ -67,19 +67,19 @@ public class DiskManager {
 		buff.rewind();
 		int nmbbyte = channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);
 //		f.write(buff, p.getPageIdx() * Constants.PAGE_SIZE, Constants.PAGE_SIZE);
-		System.out.println(nmbbyte );
+//		System.out.println(nmbbyte );
 		
 		channel.close();
 		f.close();
 	}
 	
 	private String getName(PageId p) {
-		String sb = Constants.PATH + "Data_" + p.getFileIdx() + ".rf";
+		String sb = Constants.PATH + "/Data_" + p.getFileIdx() + ".rf";
 		return sb;
 	}
 	
 	private String getName(int fileIdx) {
-		String sb = Constants.PATH + "Data_" + fileIdx + ".rf";
+		String sb = Constants.PATH + "/Data_" + fileIdx + ".rf";
 		return sb;
 	}
 

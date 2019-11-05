@@ -22,10 +22,10 @@ public class HeapFile {
 		DiskManager.getInstance().createFile(reldef.getFileIdx());
 		temp = DiskManager.getInstance().addPage(reldef.getFileIdx());
 
+		ByteBuffer buff = BufferManager.getInstance().getPage(temp);
 		for (int i = 0; i < Constants.PAGE_SIZE; i += Integer.BYTES) {
-			BufferManager.getInstance().getPage(temp).putInt(i, 0);
+			buff.putInt(i, 0);
 		}
-
 		BufferManager.getInstance().freePage(temp, true);
 	}
 
@@ -96,11 +96,15 @@ public class HeapFile {
 		List<Record> listrec = new ArrayList<>();
 		ByteBuffer buff = BufferManager.getInstance().getPage(p);
 		Record temp = new Record(this.reldef);
-		for (int i = reldef.getSlotCount(); i < Constants.PAGE_SIZE; i += reldef.getRecordSize()) {
-			temp.getValues().clear();
-			temp.readFromBuffer(buff, i);
-			listrec.add(temp);
+
+		for (int i = 0; i < reldef.getSlotCount(); i++) {
+			if (buff.get(i) == 1) {
+				temp.getValues().clear();
+				temp.readFromBuffer(buff, i * reldef.getRecordSize() + reldef.getSlotCount());
+				listrec.add(temp);
+			}
 		}
+		BufferManager.getInstance().freePage(p, false);
 		return listrec;
 	}
 
@@ -118,19 +122,19 @@ public class HeapFile {
 
 	public List<Record> getAllRecords() throws IOException {
 		List<Record> listrec = new ArrayList<>();
-		List<Record> listPerPage ;
-		
-		PageId header = new PageId(reldef.getFileIdx(),0);
+		List<Record> listPerPage;
+
+		PageId header = new PageId(reldef.getFileIdx(), 0);
 		ByteBuffer buff = BufferManager.getInstance().getPage(header);
-		
+
 		int nbDataPage = buff.getInt(0);
-		
-		for(int i = 1; i < nbDataPage + 1; i++) {
-			PageId pageCourant = new PageId(reldef.getFileIdx(),i);
-			
+
+		for (int i = 1; i < nbDataPage + 1; i++) {
+			PageId pageCourant = new PageId(reldef.getFileIdx(), i);
+
 			listPerPage = getRecordsInDataPage(pageCourant);
-			
-			for(int j = 0; j < listPerPage.size(); j++) {
+
+			for (int j = 0; j < listPerPage.size(); j++) {
 				listrec.add(listPerPage.get(j));
 			}
 		}

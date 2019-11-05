@@ -4,17 +4,32 @@ import java.io.IOException;
 
 public class DBMain {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Constants.PATH = args[0];
-		DBManager.getInstance().init();
+		try {
+			DBManager.getInstance().init();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		while (true) {
-			String chaine = Saisie.lireChaine(null);
+			String chaine = Saisie.lireChaine("Veuillez saisir une commande : ");
 			if (chaine.equalsIgnoreCase("exit")) {
-				DBManager.getInstance().finish();
+				try {
+					DBManager.getInstance().finish();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			} else
-				DBManager.getInstance().processCommand(chaine);
+				try {
+					DBManager.getInstance().processCommand(chaine);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 

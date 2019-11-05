@@ -9,10 +9,15 @@ public class Record {
 
 	private RelDef reldef;
 	private List<String> values;
-
+	
 	public Record(RelDef reldef) {
 		this.reldef = reldef;
 		values = new ArrayList<>();
+	}
+
+	public Record(RelDef reldef,List <String> values) {
+		this.reldef = reldef;
+		this.values = values;
 	}
 
 	public RelDef getReldef() {
@@ -33,7 +38,6 @@ public class Record {
 
 		for (int i = 0; i < reldef.getNumcol(); i++) {
 			string = list.get(i);
-
 			if (string.startsWith("int")) {
 				buffer.putInt(position, Integer.parseInt(values.get(i)));
 				position += Integer.BYTES;

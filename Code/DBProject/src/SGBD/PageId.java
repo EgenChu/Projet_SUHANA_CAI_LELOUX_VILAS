@@ -25,16 +25,19 @@ public class PageId {
 		this.pageIdx = pageIdx;
 	}
 	
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("pageId : ");
 		sb.append(getPageIdx());
 		sb.append(" fileId: ");
-		sb.append(getFileIdx());
+		sb.append(getFileIdx()).append(" ");
 		
 		return sb.toString();
 	}
+	
+	
 	
 	@Override
 	public boolean equals(Object obj) {

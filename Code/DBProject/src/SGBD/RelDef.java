@@ -36,7 +36,7 @@ public class RelDef {
 
 	@Override
 	public String toString() {
-		return "*"+relname+"*"+numcol+"*"+list+"*"+fileIdx+"*"+recordSize+"*"+slotCount+"*";
+		return relname+";"+numcol+";"+list+";"+fileIdx+";"+recordSize+";"+slotCount;
 	}
 
 	public int getFileIdx() {
