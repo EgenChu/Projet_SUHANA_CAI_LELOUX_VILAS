@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 public class Main {
 
 	public static void main(String[] args) {
+//	Constants.PATH = args[0]; 
 		
 		String s = "2;[int,int]";
 		String[] st = s.split(";");
