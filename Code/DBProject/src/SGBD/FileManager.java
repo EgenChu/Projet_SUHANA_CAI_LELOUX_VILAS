@@ -49,6 +49,7 @@ public class FileManager {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
 				list = heapFiles.get(i).getAllRecords();
 			}
+		System.out.println(list.size());
 		return list;
 	}
 	

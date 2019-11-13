@@ -1,25 +1,65 @@
 package SGBD;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
-		String s = "2;[int,int]";
-		String[] st = s.split(";");
-		
-		System.out.println(st[1]);
 
 		/*
-		 * public static void main(String[] args) { Constants.PATH = args[0];
+		 * String s = "2;[int,int]"; String[] st = s.split(";");
 		 * 
+		 * System.out.println(st[1]);
+		 * 
+		 * ByteBuffer bf = ByteBuffer.allocate(9);
+		 * 
+		 * 
+		 * for (int i = 0; i < 8; i += Integer.BYTES) { bf.putInt(i, 0); }
+		 * 
+		 * 
+		 * File fichier = new File(
+		 * 
+		 * ); try { RandomAccessFile file = new RandomAccessFile(fichier, "rw");
+		 * if(fichier.createNewFile()) System.out.println("créé");; FileChannel channel
+		 * = file.getChannel();
+		 * 
+		 * channel.read(bf);
+		 * 
+		 * for (int i = 0; i < 8; i += Integer.BYTES) {
+		 * System.out.println(bf.getInt(i)); }
+		 * 
+		 * ByteBuffer bfr = ByteBuffer.allocate(9);
+		 * 
+		 * bfr.putInt(0, 1);
+		 * 
+		 * channel.write(bf);
+		 * 
+		 * bf.putInt(0, 2);
+		 * 
+		 * 
+		 * channel.read(bfr);
+		 * 
+		 * for (int i = 0; i < 8; i += Integer.BYTES) {
+		 * System.out.println(bfr.getInt(i)); }
+		 * 
+		 * } catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
+
+//			public static void main(String[] args) { Constants.PATH = args[0];
+		/*
 		 * try { DiskManager.getInstance().createFile(1); } catch (IOException e) {
 		 * e.printStackTrace(); }
 		 * 
-		 * PageId page = new PageId(1, 0); PageId page2 = new PageId(1, 1); PageId page3
-		 * = new PageId(1, 2);
+		 * 
 		 * 
 		 * 
 		 * try {
@@ -74,7 +114,7 @@ public class Main {
 		 * 
 		 * 
 		 * 
-		 * ByteBuffer bf = ByteBuffer.allocate(9); String s = "Hello";
+		 * 
 		 * 
 		 * bf.putInt(3); System.out.println(bf.position()); bf.put(s.getBytes());
 		 * System.out.println(bf.position());
@@ -112,5 +152,97 @@ public class Main {
 		 * 
 		 * }
 		 */
+
+		Constants.PATH = args[0];
+		List<String> typecol = new ArrayList<>();
+		typecol.add("int");
+		RelDef reldef = new RelDef("première", 1, typecol, 100, 4, 819);
+
+		HeapFile hf = new HeapFile(reldef);
+
+		FileManager.getInstance().getHeapFiles().add(hf);
+
+		// File fichier = new File(Constants.PATH + "/Data_100.rf");
+
+		try {
+
+			/*
+			 * RandomAccessFile file = new RandomAccessFile(fichier, "rw"); if
+			 * (fichier.createNewFile()) System.out.println("créé"); else {
+			 * System.out.println("non créé"); }
+			 * 
+			 * FileChannel channel = file.getChannel();
+			 */
+
+			hf.createNewOndisk();
+
+			PageId p = new PageId(reldef.getFileIdx(), 0);
+
+			// Chargement de la headerPage 0
+			ByteBuffer bf = BufferManager.getInstance().getPage(p);
+
+			System.out.println("header page : " + p.getPageIdx() + bf.getInt(0) + bf.getInt(4));
+			System.out.println("---------");
+			BufferManager.getInstance().freePage(p, true); // 0,0,0
+
+			List<String> values = new ArrayList<>();
+			values.add("127");
+			DBManager.getInstance().insert("première", values);
+			
+			values.remove("127");
+			values.add("234");
+			
+			DBManager.getInstance().insert("première", values);
+			
+			bf = BufferManager.getInstance().getPage(p);
+
+			System.out.println("header page : " + p.getPageIdx() + bf.getInt(0) + bf.getInt(4));
+			System.out.println("---------");
+			BufferManager.getInstance().freePage(p, true); // 0,0,0
+
+			BufferManager.getInstance().flushAll();
+			// Page 1 ajouté
+
+			PageId page = new PageId(100,1);
+
+			bf = BufferManager.getInstance().getPage(p);
+			ByteBuffer bb = BufferManager.getInstance().getPage(page);
+			System.out.println(page.getPageIdx() + " : " + bb.get(0) + " : " + bb.get(1) + " : " + bb.get(2));
+			System.out.println(
+					"header page : " + p.getPageIdx() + bf.getInt(0) + "+++++"+ bf.getInt(4) +"+++++++"+ bf.getInt(8) + bf.getInt(12));
+			System.out.println("---------");
+			BufferManager.getInstance().freePage(p, true); // 1,819,0,0
+			BufferManager.getInstance().freePage(page, true);
+
+			// Page 2 ajouté
+			/*
+			 * page = new PageId(100,1);
+			 * 
+			 * bf = BufferManager.getInstance().getPage(p);
+			 * System.out.println(page.getPageIdx() + " : "); System.out.println(
+			 * "header page : " + p.getPageIdx() + bf.getInt(0) + bf.getInt(4) +
+			 * bf.getInt(8) + bf.getInt(12)); System.out.println("---------");
+			 * BufferManager.getInstance().freePage(p, true); // 2,819,819,0
+			 */
+			DiskManager.getInstance().writePage(p, bf);
+
+		} catch (IOException e) { // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/*
+		 * Constants.PATH = args[0]; File fichier = new File(Constants.PATH +
+		 * "/Data_0.rf"); try { RandomAccessFile file = new RandomAccessFile(fichier,
+		 * "rw"); FileChannel channel = file.getChannel();
+		 * 
+		 * ByteBuffer buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		 * 
+		 * channel.read(buff); System.out.println(buff.getInt(0));
+		 * 
+		 * 
+		 * } catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
+
 	}
 }

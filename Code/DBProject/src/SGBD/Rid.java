@@ -16,4 +16,10 @@ public class Rid {
 	public int getSlotIdx() {
 		return slotIdx;
 	}
+
+	@Override
+	public String toString() {
+		return "pageId :" + pageId + ", slotIdx : " + slotIdx;
+	}
+	
 }

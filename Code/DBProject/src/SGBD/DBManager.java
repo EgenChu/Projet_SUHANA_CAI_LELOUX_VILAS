@@ -46,7 +46,7 @@ public class DBManager {
 			while (st.hasMoreTokens()) {
 				list.add(st.nextToken());
 			}
- 
+
 			creatRelation(relname, numcol, list);
 			break;
 
@@ -58,15 +58,19 @@ public class DBManager {
 			}
 			insert(relname, listValues);
 			break;
-		
+
 		case "clean":
 			clean();
 			break;
-		
+
 		case "selectall":
 			relname = st.nextToken();
-			if (st.hasMoreTokens()) select(relname, Integer.parseInt(st.nextToken()), st.nextToken());
-			 else selectAll(relname);
+			selectAll(relname);
+			break;
+
+		case "select":
+			relname = st.nextToken();
+			select(relname, Integer.parseInt(st.nextToken()), st.nextToken());
 			break;
 
 		}
@@ -113,8 +117,9 @@ public class DBManager {
 
 	private void selectAll(String relName) throws IOException {
 		List<Record> list = FileManager.getInstance().selectAllFromRelation(relName);
+		System.out.println(list.size());
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
+			System.out.println(list.get(i).toString());
 		}
 		System.out.println("Total records = " + list.size());
 
@@ -145,8 +150,9 @@ public class DBManager {
 			if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
 				relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
 		}
-
-		record = new Record(relation,values);
+		
+		record = new Record(relation, values);
+		System.out.println(record.getReldef().getRelname());
 		FileManager.getInstance().insertRecordInRelation(record, relation.getRelname());
 	}
 
@@ -169,8 +175,8 @@ public class DBManager {
 			for (int i = 0; i < data.length; i++) {
 				values.add(i, data[i]);
 			}
-			
-			insert(relation.getRelname(),values);
+
+			insert(relation.getRelname(), values);
 
 		}
 

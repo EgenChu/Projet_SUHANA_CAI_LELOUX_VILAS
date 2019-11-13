@@ -21,12 +21,14 @@ public class DiskManager {
 		return diskManager;
 	}
 
-	public void createFile(int fileIdx) throws IOException {
+	public boolean createFile(int fileIdx) throws IOException {
 		File fichier = new File(getName(fileIdx));
 			if (fichier.createNewFile()) {
 				System.out.println("Data_" + fileIdx + ".rf" + " created");
+				return true;
 			} else {
 				System.out.println("Data_" + fileIdx + ".rf" + " not created");
+				return false;
 			}
 	}
 

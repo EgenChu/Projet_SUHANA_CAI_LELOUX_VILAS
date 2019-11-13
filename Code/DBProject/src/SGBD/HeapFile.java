@@ -19,14 +19,18 @@ public class HeapFile {
 
 	public void createNewOndisk() throws IOException {
 		PageId temp;
-		DiskManager.getInstance().createFile(reldef.getFileIdx());
-		temp = DiskManager.getInstance().addPage(reldef.getFileIdx());
+		if (DiskManager.getInstance().createFile(reldef.getFileIdx())) {
 
-		ByteBuffer buff = BufferManager.getInstance().getPage(temp);
-		for (int i = 0; i < Constants.PAGE_SIZE; i += Integer.BYTES) {
-			buff.putInt(i, 0);
-		}
-		BufferManager.getInstance().freePage(temp, true);
+			temp = DiskManager.getInstance().addPage(reldef.getFileIdx());
+
+			ByteBuffer buff = BufferManager.getInstance().getPage(temp);
+			for (int i = 0; i < Constants.PAGE_SIZE; i += Integer.BYTES) {
+				buff.putInt(i, 0);
+			}
+			BufferManager.getInstance().freePage(temp, true);
+			System.out.println(temp);
+		} else
+			System.out.println("file already exist");
 	}
 
 	public PageId addDataPage() throws IOException {
@@ -50,7 +54,9 @@ public class HeapFile {
 		int i = 4;
 		int pagelibre = 1, totalpage;
 
+
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
+
 		bf = BufferManager.getInstance().getPage(headerPage);
 
 		totalpage = bf.getInt(0);
@@ -58,8 +64,10 @@ public class HeapFile {
 			i += Integer.BYTES;
 			pagelibre++;
 		}
+		System.out.println(totalpage + "------------" + pagelibre);
 
 		BufferManager.getInstance().freePage(headerPage, false);
+
 
 		if (pagelibre > totalpage)
 			return null;
@@ -72,12 +80,15 @@ public class HeapFile {
 		int indiceCaseLibre = 0;
 		bf = BufferManager.getInstance().getPage(pageId);
 
-		while (bf.get(indiceCaseLibre) != 0) {
+		while (bf.get(indiceCaseLibre) != (byte) 0) {
 			indiceCaseLibre++;
 		}
 
 		record.writeToBuffer(bf, indiceCaseLibre * reldef.getRecordSize() + reldef.getSlotCount());
 		bf.put(indiceCaseLibre, (byte) 1);
+
+		// System.out.println(indiceCaseLibre * reldef.getRecordSize() +
+		// reldef.getSlotCount() + " " + indiceCaseLibre);
 
 		BufferManager.getInstance().freePage(pageId, true);
 
@@ -98,8 +109,11 @@ public class HeapFile {
 		Record temp = new Record(this.reldef);
 
 		for (int i = 0; i < reldef.getSlotCount(); i++) {
-			if (buff.get(i) == 1) {
+			System.out.println(buff.get(i));
+			if (buff.get(i) == (byte) 1) {
+				System.out.println(temp == null ? "temp est null" : temp + " " + i);
 				temp.getValues().clear();
+				System.out.println(temp == null ? "temp est null" : temp + " " + i);
 				temp.readFromBuffer(buff, i * reldef.getRecordSize() + reldef.getSlotCount());
 				listrec.add(temp);
 			}
@@ -114,8 +128,8 @@ public class HeapFile {
 		if (libre != null) {
 			return writeRecordToDataPage(record, libre);
 		} else {
-			addDataPage();
-			libre = getFreeDataPageId();
+			libre = addDataPage();
+			System.out.println(libre);
 			return writeRecordToDataPage(record, libre);
 		}
 	}
@@ -129,6 +143,9 @@ public class HeapFile {
 
 		int nbDataPage = buff.getInt(0);
 
+		BufferManager.getInstance().freePage(header, false);
+
+		System.out.println(nbDataPage);
 		for (int i = 1; i < nbDataPage + 1; i++) {
 			PageId pageCourant = new PageId(reldef.getFileIdx(), i);
 
