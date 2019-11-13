@@ -18,11 +18,11 @@ public class Frame {
 	}
 	
 	public void setFrame(PageId pageId ,int pin_count ,boolean dirty ) {
+		this.buffer.clear();
 		this.pageId=pageId;
 		this.pin_count=pin_count;
 		this.dirty=dirty;
-		if(pin_count==0)
-		setRefbit(true);	
+		setRefbit(false);	
 	}
 	
 	public void reset() {

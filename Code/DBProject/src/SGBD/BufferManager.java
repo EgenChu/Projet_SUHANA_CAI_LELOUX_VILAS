@@ -25,23 +25,37 @@ public class BufferManager {
 
 	public ByteBuffer getPage(PageId pageId) {
 		int espace = Constants.FRAME_COUNT;
+		int sdChance = 0;
 		
 		for (int i = 0; i < frames.size(); i++) {
 			if (frames.get(i).getPageId() != null) {
 				if (frames.get(i).getPageId().equals(pageId)) {
+					frames.get(i).setPin_count(frames.get(i).getPin_count()+1);
+					System.out.println("["+ frames.get(i).getPageId()+"]");
 					return(frames.get(i).getBuffer());
 				}
 			}
 		}
 		
-		for (int i = 0; i < frames.size(); i++) {
-			if (frames.get(i).getPin_count() == 0) {
-				if (!frames.get(i).isRefbit()) {
-					espace = i;
-					break;
+		do {
+			for (int i = 0; i < frames.size(); i++) {
+				if (frames.get(i).getPin_count() == 0) {
+					if (!frames.get(i).isRefbit()) {
+						espace = i;
+						sdChance = 0;
+					}
+					
+					else {
+						frames.get(i).setRefbit(false);
+						sdChance = 1;
+					}
 				}
+				if (espace != Constants.FRAME_COUNT)
+					break;
 			}
-		}
+		}while(sdChance == 1);
+
+
 
 
 		if (espace == Constants.FRAME_COUNT) {
@@ -56,12 +70,13 @@ public class BufferManager {
 						e.printStackTrace();
 					}
 				}
-				frames.get(espace).setFrame(pageId, frames.get(espace).getPin_count() + 1, false);
+				frames.get(espace).setFrame(pageId, 1, false);
 				DiskManager.getInstance().readPage(pageId, frames.get(espace).getBuffer());
 				//System.out.println(pageId.toString() + " remplie dans le buffer " + espace);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println("["+ frames.get(espace).getPageId()+"]");
 			return frames.get(espace).getBuffer();
 		}
 	}
@@ -70,8 +85,10 @@ public class BufferManager {
 		for (int i = 0; i < frames.size(); i++) {
 			if (frames.get(i).getPageId() != null) {
 				if (frames.get(i).getPageId().equals(pageId)) {
-					if(frames.get(i).getPin_count()>0)
-						frames.get(i).setPin_count(frames.get(i).getPin_count() - 1);
+					frames.get(i).setPin_count(frames.get(i).getPin_count() - 1);
+					if(frames.get(i).getPin_count() == 0) {
+						frames.get(i).setRefbit(true);
+					}
 					if(!frames.get(i).isDirty())
 						frames.get(i).setDirty(valdirty);
 				}
