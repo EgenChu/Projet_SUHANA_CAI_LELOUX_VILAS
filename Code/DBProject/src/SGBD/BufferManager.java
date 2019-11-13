@@ -70,7 +70,8 @@ public class BufferManager {
 		for (int i = 0; i < frames.size(); i++) {
 			if (frames.get(i).getPageId() != null) {
 				if (frames.get(i).getPageId().equals(pageId)) {
-					frames.get(i).setPin_count(frames.get(i).getPin_count() - 1);
+					if(frames.get(i).getPin_count()>0)
+						frames.get(i).setPin_count(frames.get(i).getPin_count() - 1);
 					if(!frames.get(i).isDirty())
 						frames.get(i).setDirty(valdirty);
 				}
