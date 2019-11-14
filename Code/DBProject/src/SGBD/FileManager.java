@@ -62,7 +62,7 @@ public class FileManager {
 			}
 		
 		for(int i = 0; i<list.size();i++) {
-			if(list.get(i).getValues().get(idxCol).equals(valeur))
+			if(list.get(i).getValues().get(idxCol - 1).equals(valeur))
 				list2.add(list.get(i));
 		}
 		return list2;

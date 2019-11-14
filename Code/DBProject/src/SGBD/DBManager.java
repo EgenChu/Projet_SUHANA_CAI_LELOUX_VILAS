@@ -72,7 +72,11 @@ public class DBManager {
 			relname = st.nextToken();
 			select(relname, Integer.parseInt(st.nextToken()), st.nextToken());
 			break;
-
+		case "insertall":
+			relname = st.nextToken();
+			String filename = st.nextToken();
+			insertAll(relname, filename);
+			break;
 		}
 
 	}
@@ -156,21 +160,24 @@ public class DBManager {
 	}
 
 	public void insertAll(String nomRelation, String fileName) throws IOException {
-		List<String> values = new ArrayList<>();
+		
 		RelDef relation = null;
-		FileReader fichier = new FileReader(Constants.PATH + "/../" + fileName);
+		File file = new File(Constants.PATH + "/../" + fileName);
+		FileReader fichier = new FileReader(file);
 		BufferedReader br = new BufferedReader(fichier);
 		String row;
 
+		System.out.println(file.exists() ? "Il existe" : "Il existe pas");
+		
 		for (int i = 0; i < FileManager.getInstance().getHeapFiles().size(); i++) {
 			if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
 				relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
 		}
 
 		while ((row = br.readLine()) != null) {
+			List<String> values = new ArrayList<>();
 			String[] data = row.split(",");
-
-			values.clear();
+			
 			for (int i = 0; i < data.length; i++) {
 				values.add(i, data[i]);
 			}
