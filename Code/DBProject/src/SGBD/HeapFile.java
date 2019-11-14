@@ -146,7 +146,6 @@ public class HeapFile {
 
 		BufferManager.getInstance().freePage(header, false);
 
-		System.out.println(nbDataPage);
 		for (int i = 1; i < nbDataPage + 1; i++) {
 			PageId pageCourant = new PageId(reldef.getFileIdx(), i);
 			if(listPerPage != null) listPerPage.clear();

@@ -79,7 +79,7 @@ public class BufferManager {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("["+ frames.get(espace).getPageId()+"]");
+//			System.out.println("["+ frames.get(espace).getPageId()+"]");
 			return frames.get(espace).getBuffer();
 		}
 	}
