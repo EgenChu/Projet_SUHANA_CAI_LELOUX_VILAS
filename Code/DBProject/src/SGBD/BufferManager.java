@@ -60,11 +60,14 @@ public class BufferManager {
 
 		if (espace == Constants.FRAME_COUNT) {
 			System.out.println("Erreur dans le code");
+			System.out.println(frames.get(0).getPageId() + " : pinCount " + frames.get(0).getPin_count());
+			System.out.println(frames.get(1).getPageId() + " : pinCount " + frames.get(1).getPin_count());
 			return null;
 		} else {
 			try {
 				if (frames.get(espace).isDirty()) {
 					try {
+						System.out.println(pageId.getPageIdx() == 0 ? "La pageId " + pageId + "est ecrit dans le fichier" : "");
 						DiskManager.getInstance().writePage(frames.get(espace).getPageId(),frames.get(espace).getBuffer());
 					} catch (IOException e) {
 						e.printStackTrace();

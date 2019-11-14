@@ -116,10 +116,9 @@ public class DBManager {
 	}
 
 	private void selectAll(String relName) throws IOException {
-		List<Record> list = FileManager.getInstance().selectAllFromRelation(relName);
-		System.out.println(list.size());
+		List<Record> list = FileManager.getInstance().selectAllFromRelation(relName);	
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).toString());
+			System.out.println(list.get(i));
 		}
 		System.out.println("Total records = " + list.size());
 

@@ -52,7 +52,6 @@ public class DiskManager {
 		RandomAccessFile f = new RandomAccessFile(fichier, "r");
 		FileChannel channel = f.getChannel();
 
-//		FileChannel.open(Path.of(, more), StandardOpenOption.READ)();
 		int nmbbyte = channel.read(buff, p.getPageIdx() * Constants.PAGE_SIZE);
 //		System.out.println(nmbbyte);
 //		f.readFully(buff, p.getPageIdx()*Constants.pageSize, Constants.pageSize);
@@ -66,7 +65,7 @@ public class DiskManager {
 		RandomAccessFile f = new RandomAccessFile(fichier, "rw");
 		FileChannel channel = f.getChannel();
 		
-		buff.rewind();
+		buff.clear();
 		int nmbbyte = channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);
 //		f.write(buff, p.getPageIdx() * Constants.PAGE_SIZE, Constants.PAGE_SIZE);
 //		System.out.println(nmbbyte );

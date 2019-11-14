@@ -32,7 +32,7 @@ public class TestMain {
 
 			PageId header1 = new PageId(1, 0);
 			PageId header2 = new PageId(2, 0);
-			PageId header3 = new PageId(3, 0);
+			//PageId header3 = new PageId(3, 0);
 
 			System.out.println("*-----------*");
 			bf = BufferManager.getInstance().getPage(header1);
@@ -43,27 +43,18 @@ public class TestMain {
 			System.out.println(header2.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
 			BufferManager.getInstance().freePage(header2, false);
 
-			bf = BufferManager.getInstance().getPage(header3);
-			System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
-			BufferManager.getInstance().freePage(header3, false);
+			/*
+			 * bf = BufferManager.getInstance().getPage(header3);
+			 * System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) +
+			 * bf.getInt(8)); BufferManager.getInstance().freePage(header3, false);
+			 * System.out.println((BufferManager.getInstance().getPage(header3).getInt(4)));
+			 * BufferManager.getInstance().freePage(header3, false);
+			 */
 			System.out.println("*-----------*");
 
-			PageId p1 = addDataPage(1, 819);
-			System.out.println("*-----------*");
-			bf = BufferManager.getInstance().getPage(header1);
-			System.out.println(header1.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
-			BufferManager.getInstance().freePage(header1, false);
-
-			bf = BufferManager.getInstance().getPage(header2);
-			System.out.println(header2.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
-			BufferManager.getInstance().freePage(header2, false);
-
-			bf = BufferManager.getInstance().getPage(header3);
-			System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
-			BufferManager.getInstance().freePage(header3, false);
-			System.out.println("*-----------*");
-
-			PageId p2 = addDataPage(2, 828);
+			if(getFreeDataPageId(1) == null) {
+				PageId p1 = addDataPage(1, 819);
+			}
 			System.out.println("*-----------*");
 			bf = BufferManager.getInstance().getPage(header1);
 			System.out.println(header1.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
@@ -73,12 +64,37 @@ public class TestMain {
 			System.out.println(header2.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
 			BufferManager.getInstance().freePage(header2, false);
 
-			bf = BufferManager.getInstance().getPage(header3);
-			System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
-			BufferManager.getInstance().freePage(header3, false);
+			/*
+			 * bf = BufferManager.getInstance().getPage(header3);
+			 * System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) +
+			 * bf.getInt(8)); BufferManager.getInstance().freePage(header3, false);
+			 * System.out.println((BufferManager.getInstance().getPage(header3).getInt(4)));
+			 * BufferManager.getInstance().freePage(header3, false);
+			 */
 			System.out.println("*-----------*");
 
-			PageId p3 = addDataPage(3, 23);
+			if(getFreeDataPageId(2) == null) {
+				PageId p2 = addDataPage(2, 123);
+			}
+			System.out.println("*-----------*");
+			bf = BufferManager.getInstance().getPage(header1);
+			System.out.println(header1.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
+			BufferManager.getInstance().freePage(header1, false);
+
+			bf = BufferManager.getInstance().getPage(header2);
+			System.out.println(header2.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
+			BufferManager.getInstance().freePage(header2, false);
+
+			/*
+			 * bf = BufferManager.getInstance().getPage(header3);
+			 * System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) +
+			 * bf.getInt(8)); BufferManager.getInstance().freePage(header3, false);
+			 * System.out.println((BufferManager.getInstance().getPage(header3).getInt(4)));
+			 * BufferManager.getInstance().freePage(header3, false);
+			 */
+			System.out.println("*-----------*");
+
+			//PageId p3 = addDataPage(3, 23);
 
 			System.out.println("*-----------*");
 			bf = BufferManager.getInstance().getPage(header1);
@@ -89,9 +105,11 @@ public class TestMain {
 			System.out.println(header2.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
 			BufferManager.getInstance().freePage(header2, false);
 
-			bf = BufferManager.getInstance().getPage(header3);
-			System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) + bf.getInt(8));
-			BufferManager.getInstance().freePage(header3, false);
+			/*
+			 * bf = BufferManager.getInstance().getPage(header3);
+			 * System.out.println(header3.toString() + bf.getInt(0) + bf.getInt(4) +
+			 * bf.getInt(8)); BufferManager.getInstance().freePage(header3, false);
+			 */
 			System.out.println("*-----------*");
 
 			/*
@@ -143,7 +161,7 @@ public class TestMain {
 		return DiskManager.getInstance().addPage(file);
 	}
 
-	public PageId getFreeDataPageId(int file) {
+	public static PageId getFreeDataPageId(int file) {
 		ByteBuffer bf;
 		int i = 4;
 		int pagelibre = 1, totalpage;

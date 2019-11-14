@@ -96,7 +96,7 @@ public class Record {
 		for(int i = 0; i < values.size()-1;i++) {
 			bf.append(values.get(i) + " ; ");
 		}
-		bf.append(values.get(values.size()));
+		bf.append(values.get(values.size()-1));
 		return bf.toString();
 	}
 	

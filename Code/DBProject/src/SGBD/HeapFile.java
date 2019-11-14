@@ -56,6 +56,7 @@ public class HeapFile {
 
 
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
+		
 
 		bf = BufferManager.getInstance().getPage(headerPage);
 
@@ -95,8 +96,8 @@ public class HeapFile {
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
 		bf = BufferManager.getInstance().getPage(headerPage);
 
-		int valeur_pagemodif = bf.getInt(pageId.getPageIdx()) - 1;
-		bf.putInt(pageId.getPageIdx(), valeur_pagemodif);
+		int valeur_pagemodif = bf.getInt(pageId.getPageIdx() * Integer.BYTES) - 1;
+		bf.putInt(pageId.getPageIdx() * Integer.BYTES, valeur_pagemodif);
 
 		BufferManager.getInstance().freePage(headerPage, true);
 
@@ -106,14 +107,11 @@ public class HeapFile {
 	public List<Record> getRecordsInDataPage(PageId p) throws IOException {
 		List<Record> listrec = new ArrayList<>();
 		ByteBuffer buff = BufferManager.getInstance().getPage(p);
-		Record temp = new Record(this.reldef);
 
 		for (int i = 0; i < reldef.getSlotCount(); i++) {
-			System.out.println(buff.get(i));
+			//System.out.println(buff.get(i) == 1 ? buff.get(i) : "");
 			if (buff.get(i) == (byte) 1) {
-				System.out.println(temp == null ? "temp est null" : temp + " " + i);
-				temp.getValues().clear();
-				System.out.println(temp == null ? "temp est null" : temp + " " + i);
+				Record temp = new Record(this.reldef);
 				temp.readFromBuffer(buff, i * reldef.getRecordSize() + reldef.getSlotCount());
 				listrec.add(temp);
 			}
@@ -123,6 +121,9 @@ public class HeapFile {
 	}
 
 	public Rid insertRecord(Record record) throws IOException {
+		
+		PageId headerPage = new PageId(this.reldef.getFileIdx(),0);
+		
 		PageId libre = getFreeDataPageId();
 
 		if (libre != null) {
@@ -136,7 +137,7 @@ public class HeapFile {
 
 	public List<Record> getAllRecords() throws IOException {
 		List<Record> listrec = new ArrayList<>();
-		List<Record> listPerPage;
+		List<Record> listPerPage = null;
 
 		PageId header = new PageId(reldef.getFileIdx(), 0);
 		ByteBuffer buff = BufferManager.getInstance().getPage(header);
@@ -148,7 +149,7 @@ public class HeapFile {
 		System.out.println(nbDataPage);
 		for (int i = 1; i < nbDataPage + 1; i++) {
 			PageId pageCourant = new PageId(reldef.getFileIdx(), i);
-
+			if(listPerPage != null) listPerPage.clear();
 			listPerPage = getRecordsInDataPage(pageCourant);
 
 			for (int j = 0; j < listPerPage.size(); j++) {
