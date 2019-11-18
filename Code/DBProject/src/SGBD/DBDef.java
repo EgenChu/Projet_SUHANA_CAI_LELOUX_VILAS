@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.*;
 
 public class DBDef {
@@ -23,7 +22,7 @@ public class DBDef {
 
 	/** Point d'accès pour l'instance unique du singleton */
 	public static DBDef getInstance() {
-		
+
 		return DBDef;
 	}
 
@@ -85,10 +84,10 @@ public class DBDef {
 	}
 
 	private void readRelDefFromFile(File fichier) throws IOException{
-		FileReader file = new FileReader(fichier);
-		BufferedReader br = new BufferedReader(file);
+		try(BufferedReader br = new BufferedReader(new FileReader(fichier))) {
+			
 		this.compteur = Integer.parseInt(br.readLine().trim());
-
+		
 		if (this.compteur != 0) {
 			String row;
 			while ((row = br.readLine()) != null) {
@@ -109,7 +108,11 @@ public class DBDef {
 				listRel.add(new RelDef(relname, numcol, listString, fileIdx, recordSize, slotCount));
 			}
 		}
-
+		else {
+			System.err.println("Il n'y a pas de relation stocké dans Catalogue.def");
+		}
+		
+		}
 	}
 
 }

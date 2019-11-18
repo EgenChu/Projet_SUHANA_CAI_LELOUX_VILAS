@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-	
+
 	private List<HeapFile> heapFiles;
-	
+
 	private FileManager() {
 		heapFiles = new ArrayList<>();
 	}
-	
+
 	private static FileManager fileManager = null;
 
 	public static FileManager getInstance() {
@@ -19,22 +19,22 @@ public class FileManager {
 			fileManager = new FileManager();
 		return fileManager;
 	}
-	
+
 	public void init() {
-		for(int i = 0; i < DBDef.getInstance().getListRel().size(); i++) {
+		for (int i = 0; i < DBDef.getInstance().getListRel().size(); i++) {
 			heapFiles.add(new HeapFile(DBDef.getInstance().getListRel().get(i)));
 		}
 	}
-	
+
 	public void CreateRelationFile(RelDef relDef) throws IOException {
 		HeapFile hF = new HeapFile(relDef);
 		heapFiles.add(hF);
 		hF.createNewOndisk();
 	}
-	
-	public Rid insertRecordInRelation(Record record ,String relName) throws IOException {
+
+	public Rid insertRecordInRelation(Record record, String relName) throws IOException {
 		Rid rid = null;
-		for(int i = 0; i < heapFiles.size(); i++) {
+		for (int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) {
 				rid = heapFiles.get(i).insertRecord(record);
 				break;
@@ -42,32 +42,32 @@ public class FileManager {
 		}
 		return rid;
 	}
-	
-	public List<Record> selectAllFromRelation(String relName) throws IOException{
+
+	public List<Record> selectAllFromRelation(String relName) throws IOException {
 		List<Record> list = null;
-		for(int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
+		for (int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relName))
 				list = heapFiles.get(i).getAllRecords();
-			}
+		}
 		return list;
 	}
-	
-	public List<Record> selectFromRelation(String relName, int idxCol, String valeur) throws IOException{
+
+	public List<Record> selectFromRelation(String relName, int idxCol, String valeur) throws IOException {
 		List<Record> recordsOnHeapFile = null;
 		List<Record> list2 = new ArrayList<Record>();
-		
-		for(int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
+
+		for (int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relName))
 				recordsOnHeapFile = heapFiles.get(i).getAllRecords();
-			}
-		
-		for(int i = 0; i<recordsOnHeapFile.size();i++) {
-			if(recordsOnHeapFile.get(i).getValues().get(idxCol - 1).equals(valeur))
+		}
+
+		for (int i = 0; i < recordsOnHeapFile.size(); i++) {
+			if (recordsOnHeapFile.get(i).getValues().get(idxCol - 1).equals(valeur))
 				list2.add(recordsOnHeapFile.get(i));
 		}
 		return list2;
 	}
-	
+
 	public void reset() {
 		heapFiles.clear();
 	}
@@ -75,7 +75,30 @@ public class FileManager {
 	public List<HeapFile> getHeapFiles() {
 		return heapFiles;
 	}
-	
-	
-	
+
+	public int deleteFromRelation(String relName, int idxCol, String valeur) throws IOException {
+		List<Record> recordsOnHeapFile = null;
+		List<Record> list2 = new ArrayList<Record>();
+		HeapFile hp = null;
+
+		for (int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) {
+				hp = heapFiles.get(i);
+				recordsOnHeapFile = heapFiles.get(i).getAllRecords();
+			}
+		}
+
+		for (int i = 0; i < recordsOnHeapFile.size(); i++) {
+			if (recordsOnHeapFile.get(i).getValues().get(idxCol - 1).equals(valeur))
+				list2.add(recordsOnHeapFile.get(i));
+		}
+
+		if (hp != null) {
+			hp.deleteRecordInDataPage(list2);
+		}
+		
+		return list2.size();
+
+	}
+
 }

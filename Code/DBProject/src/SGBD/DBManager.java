@@ -77,6 +77,11 @@ public class DBManager {
 			String filename = st.nextToken();
 			insertAll(relname, filename);
 			break;
+		case "delete":
+			relname = st.nextToken();
+			delete(relname, Integer.parseInt(st.nextToken()), st.nextToken());
+			break;
+			
 		}
 
 	}
@@ -120,7 +125,7 @@ public class DBManager {
 	}
 
 	private void selectAll(String relName) throws IOException {
-		List<Record> list = FileManager.getInstance().selectAllFromRelation(relName);	
+		List<Record> list = FileManager.getInstance().selectAllFromRelation(relName);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
 		}
@@ -137,10 +142,8 @@ public class DBManager {
 	}
 
 	public void delete(String relName, int idxCol, String valeur) throws IOException {
-		List<Record> list = FileManager.getInstance().selectFromRelation(relName, idxCol, valeur);
-		int totalDel = list.size();
-		
-		System.out.println("Total deleted records = " + totalDel);
+		int deletedRecords = FileManager.getInstance().deleteFromRelation(relName, idxCol, valeur);
+		System.out.println("Total deleted records = " + deletedRecords);
 	}
 
 	public void insert(String nomRelation, List<String> values) throws IOException {
@@ -151,37 +154,37 @@ public class DBManager {
 			if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
 				relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
 		}
-		
+
 		record = new Record(relation, values);
-		System.out.println(record.getReldef().getRelname());
+//		System.out.println(record.getReldef().getRelname());
 		FileManager.getInstance().insertRecordInRelation(record, relation.getRelname());
 	}
 
 	public void insertAll(String nomRelation, String fileName) throws IOException {
-		
+
 		RelDef relation = null;
 		File file = new File(Constants.PATH + "/../" + fileName);
-		FileReader fichier = new FileReader(file);
-		BufferedReader br = new BufferedReader(fichier);
-		String row;
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			String row;
 
-		System.out.println(file.exists() ? "Il existe" : "Il existe pas");
-		
-		for (int i = 0; i < FileManager.getInstance().getHeapFiles().size(); i++) {
-			if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
-				relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
-		}
+			System.out.println(file.exists() ? "Il existe" : "Il existe pas");
 
-		while ((row = br.readLine()) != null) {
-			List<String> values = new ArrayList<>();
-			String[] data = row.split(",");
-			
-			for (int i = 0; i < data.length; i++) {
-				values.add(i, data[i]);
+			for (int i = 0; i < FileManager.getInstance().getHeapFiles().size(); i++) {
+				if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
+					relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
 			}
 
-			insert(relation.getRelname(), values);
+			while ((row = br.readLine()) != null) {
+				List<String> values = new ArrayList<>();
+				String[] data = row.split(",");
 
+				for (int i = 0; i < data.length; i++) {
+					values.add(i, data[i]);
+				}
+
+				insert(relation.getRelname(), values);
+
+			}
 		}
 
 	}

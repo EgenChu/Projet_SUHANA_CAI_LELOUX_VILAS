@@ -117,8 +117,6 @@ public class HeapFile {
 	}
 
 	public Rid insertRecord(Record record) throws IOException {
-
-		
 		PageId libre = getFreeDataPageId();
 
 		if (libre != null) {
@@ -151,5 +149,39 @@ public class HeapFile {
 		}
 		return listrec;
 	}
+	
+	public void deleteRecordInDataPage(List<Record> listRecords) {
+		int indicePage = 1;
+		boolean trouve = false;
+	
+		PageId header = new PageId(reldef.getFileIdx(), 0);
+		ByteBuffer bb = BufferManager.getInstance().getPage(header);
+		int totalePage = bb.getInt(0);
+		BufferManager.getInstance().freePage(header, false);
+		
+		do {
+		PageId page = new PageId(reldef.getFileIdx(),indicePage);
+		
+		ByteBuffer buff = BufferManager.getInstance().getPage(page);
+
+		for (int i = 0; i < reldef.getSlotCount(); i++) {
+			//System.out.println(buff.get(i) == 1 ? buff.get(i) : "");
+			if (buff.get(i) == (byte) 1) {
+				Record temp = new Record(this.reldef);
+				if(listRecords.contains(temp)) {
+					buff.put(i,(byte) 0);
+					trouve = true;
+					break;
+				}
+				
+			}
+		}
+		BufferManager.getInstance().freePage(page, trouve);
+		indicePage++;
+
+		} while(!trouve && indicePage < totalePage + 1);
+		
+	}
+	
 
 }

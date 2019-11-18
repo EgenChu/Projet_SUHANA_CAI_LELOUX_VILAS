@@ -5,8 +5,8 @@ import java.io.IOException;
 public class DBMain {
 
 	public static void main(String[] args) {
-		boolean reponse = true ;
-		
+		boolean reponse = true;
+
 		Constants.PATH = args[0];
 		try {
 			DBManager.getInstance().init();
@@ -38,7 +38,8 @@ public class DBMain {
 
 	public static boolean valideCommande(String chaine) {
 		return (chaine.startsWith("create") || chaine.startsWith("insert") || chaine.startsWith("select")
-				|| chaine.startsWith("selectall") || chaine.startsWith("clean") || chaine.startsWith("insertall"));
+				|| chaine.startsWith("selectall") || chaine.startsWith("clean") || chaine.startsWith("insertall")
+				|| chaine.startsWith("delete"));
 	}
 
 }
