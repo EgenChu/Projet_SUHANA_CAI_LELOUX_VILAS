@@ -50,5 +50,37 @@ public class RelDef {
 	public String getRelname() {
 		return relname;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RelDef other = (RelDef) obj;
+		if (fileIdx != other.fileIdx)
+			return false;
+		if (list == null) {
+			if (other.list != null)
+				return false;
+		} else if (!list.equals(other.list))
+			return false;
+		if (numcol != other.numcol)
+			return false;
+		if (recordSize != other.recordSize)
+			return false;
+		if (relname == null) {
+			if (other.relname != null)
+				return false;
+		} else if (!relname.equals(other.relname))
+			return false;
+		if (slotCount != other.slotCount)
+			return false;
+		return true;
+	}
+	
+	
 	
 }

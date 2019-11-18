@@ -99,7 +99,28 @@ public class Record {
 		bf.append(values.get(values.size()-1));
 		return bf.toString();
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Record other = (Record) obj;
+		if (reldef == null) {
+			if (other.reldef != null)
+				return false;
+		} else if (!reldef.equals(other.reldef))
+			return false;
+		if (values == null) {
+			if (other.values != null)
+				return false;
+		} else if (!values.equals(other.values))
+			return false;
+		return true;
+	}
 	
 
 }
