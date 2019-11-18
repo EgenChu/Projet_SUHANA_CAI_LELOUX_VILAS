@@ -31,7 +31,7 @@ public class BufferManager {
 			if (frames.get(i).getPageId() != null) {
 				if (frames.get(i).getPageId().equals(pageId)) {
 					frames.get(i).setPin_count(frames.get(i).getPin_count()+1);
-					System.out.println("["+ frames.get(i).getPageId()+"]");
+//					System.out.println("["+ frames.get(i).getPageId()+"]");
 					return(frames.get(i).getBuffer());
 				}
 			}
@@ -53,10 +53,7 @@ public class BufferManager {
 				if (espace != Constants.FRAME_COUNT)
 					break;
 			}
-		}while(sdChance == 1);
-
-
-
+		} while(sdChance == 1);
 
 		if (espace == Constants.FRAME_COUNT) {
 			System.out.println("Erreur dans le code");
@@ -67,7 +64,7 @@ public class BufferManager {
 			try {
 				if (frames.get(espace).isDirty()) {
 					try {
-						System.out.println(pageId.getPageIdx() == 0 ? "La pageId " + pageId + "est ecrit dans le fichier" : "");
+//						System.out.println(pageId.getPageIdx() == 0 ? "La pageId " + pageId + "est ecrit dans le fichier" : "");
 						DiskManager.getInstance().writePage(frames.get(espace).getPageId(),frames.get(espace).getBuffer());
 					} catch (IOException e) {
 						e.printStackTrace();

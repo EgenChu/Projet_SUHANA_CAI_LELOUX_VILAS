@@ -24,23 +24,18 @@ public class DiskManager {
 	public boolean createFile(int fileIdx) throws IOException {
 		File fichier = new File(getName(fileIdx));
 			if (fichier.createNewFile()) {
-				System.out.println("Data_" + fileIdx + ".rf" + " created");
+//				System.out.println("Data_" + fileIdx + ".rf" + " created");
 				return true;
 			} else {
-				System.out.println("Data_" + fileIdx + ".rf" + " not created");
+//				System.out.println("Data_" + fileIdx + ".rf" + " not created");
 				return false;
 			}
 	}
 
 	public PageId addPage(int fileIdx) throws IOException {
 		File fichier = new File(getName(fileIdx));
-		RandomAccessFile f = new RandomAccessFile(fichier, "rw");
-		
-		
-//		System.out.println(f.length() + ": size before effect");
-		f.setLength(f.length() + Constants.PAGE_SIZE);
-//		System.out.println(f.length() + ": size after effect");
-		
+		RandomAccessFile f = new RandomAccessFile(fichier, "rw");		
+		f.setLength(f.length() + Constants.PAGE_SIZE);		
 		PageId p = new PageId(fileIdx,  (int) ((f.length() / Constants.PAGE_SIZE) - 1));
 		f.close();
 
@@ -53,9 +48,6 @@ public class DiskManager {
 		FileChannel channel = f.getChannel();
 
 		int nmbbyte = channel.read(buff, p.getPageIdx() * Constants.PAGE_SIZE);
-//		System.out.println(nmbbyte);
-//		f.readFully(buff, p.getPageIdx()*Constants.pageSize, Constants.pageSize);
-		
 		channel.close();
 		f.close();
 	}
@@ -66,10 +58,7 @@ public class DiskManager {
 		FileChannel channel = f.getChannel();
 		
 		buff.clear();
-		int nmbbyte = channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);
-//		f.write(buff, p.getPageIdx() * Constants.PAGE_SIZE, Constants.PAGE_SIZE);
-//		System.out.println(nmbbyte );
-		
+		int nmbbyte = channel.write(buff, p.getPageIdx() * Constants.PAGE_SIZE);		
 		channel.close();
 		f.close();
 	}

@@ -53,17 +53,17 @@ public class FileManager {
 	}
 	
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur) throws IOException{
-		List<Record> list = null;
+		List<Record> recordsOnHeapFile = null;
 		List<Record> list2 = new ArrayList<Record>();
 		
 		for(int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) 
-				list = heapFiles.get(i).getAllRecords();
+				recordsOnHeapFile = heapFiles.get(i).getAllRecords();
 			}
 		
-		for(int i = 0; i<list.size();i++) {
-			if(list.get(i).getValues().get(idxCol - 1).equals(valeur))
-				list2.add(list.get(i));
+		for(int i = 0; i<recordsOnHeapFile.size();i++) {
+			if(recordsOnHeapFile.get(i).getValues().get(idxCol - 1).equals(valeur))
+				list2.add(recordsOnHeapFile.get(i));
 		}
 		return list2;
 	}

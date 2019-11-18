@@ -56,7 +56,6 @@ public class HeapFile {
 
 
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
-		
 
 		bf = BufferManager.getInstance().getPage(headerPage);
 
@@ -65,7 +64,7 @@ public class HeapFile {
 			i += Integer.BYTES;
 			pagelibre++;
 		}
-		System.out.println(totalpage + "------------" + pagelibre);
+//		System.out.println(totalpage + "------------" + pagelibre);
 
 		BufferManager.getInstance().freePage(headerPage, false);
 
@@ -87,9 +86,6 @@ public class HeapFile {
 
 		record.writeToBuffer(bf, indiceCaseLibre * reldef.getRecordSize() + reldef.getSlotCount());
 		bf.put(indiceCaseLibre, (byte) 1);
-
-		// System.out.println(indiceCaseLibre * reldef.getRecordSize() +
-		// reldef.getSlotCount() + " " + indiceCaseLibre);
 
 		BufferManager.getInstance().freePage(pageId, true);
 
@@ -121,8 +117,7 @@ public class HeapFile {
 	}
 
 	public Rid insertRecord(Record record) throws IOException {
-		
-		PageId headerPage = new PageId(this.reldef.getFileIdx(),0);
+
 		
 		PageId libre = getFreeDataPageId();
 
@@ -130,7 +125,6 @@ public class HeapFile {
 			return writeRecordToDataPage(record, libre);
 		} else {
 			libre = addDataPage();
-			System.out.println(libre);
 			return writeRecordToDataPage(record, libre);
 		}
 	}

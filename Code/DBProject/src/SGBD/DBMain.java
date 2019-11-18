@@ -5,32 +5,40 @@ import java.io.IOException;
 public class DBMain {
 
 	public static void main(String[] args) {
+		boolean reponse = true ;
+		
 		Constants.PATH = args[0];
 		try {
 			DBManager.getInstance().init();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		while (true) {
+		while (reponse) {
 			String chaine = Saisie.lireChaine("Veuillez saisir une commande : ");
 			if (chaine.equalsIgnoreCase("exit")) {
+				reponse = false;
 				try {
 					DBManager.getInstance().finish();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
-			} else
+			} else if (valideCommande(chaine)) {
 				try {
 					DBManager.getInstance().processCommand(chaine);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			} else {
+				System.err.println("VOTRE COMMANDE N'EST PAS VALIDE, VEUILLEZ RÉESSAYER");
+			}
 		}
+	}
+
+	public static boolean valideCommande(String chaine) {
+		return (chaine.startsWith("create") || chaine.startsWith("insert") || chaine.startsWith("select")
+				|| chaine.startsWith("selectall") || chaine.startsWith("clean") || chaine.startsWith("insertall"));
 	}
 
 }

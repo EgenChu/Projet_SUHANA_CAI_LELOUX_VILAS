@@ -139,10 +139,8 @@ public class DBManager {
 	public void delete(String relName, int idxCol, String valeur) throws IOException {
 		List<Record> list = FileManager.getInstance().selectFromRelation(relName, idxCol, valeur);
 		int totalDel = list.size();
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
-		}
-		System.out.println("Total records = " + totalDel);
+		
+		System.out.println("Total deleted records = " + totalDel);
 	}
 
 	public void insert(String nomRelation, List<String> values) throws IOException {
