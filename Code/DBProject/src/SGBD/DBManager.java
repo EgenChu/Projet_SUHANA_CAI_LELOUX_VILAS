@@ -142,7 +142,7 @@ public class DBManager {
 	}
 
 	public void delete(String relName, int idxCol, String valeur) throws IOException {
-		int deletedRecords = FileManager.getInstance().deleteFromRelation(relName, idxCol, valeur);
+		int deletedRecords = FileManager.getInstance().deletedFromRelation(relName, idxCol, valeur);
 		System.out.println("Total deleted records = " + deletedRecords);
 	}
 

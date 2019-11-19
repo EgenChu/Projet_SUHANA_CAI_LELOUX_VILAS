@@ -76,29 +76,37 @@ public class FileManager {
 		return heapFiles;
 	}
 
-	public int deleteFromRelation(String relName, int idxCol, String valeur) throws IOException {
-		List<Record> recordsOnHeapFile = null;
-		List<Record> list2 = new ArrayList<Record>();
-		HeapFile hp = null;
-
-		for (int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(relName)) {
-				hp = heapFiles.get(i);
-				recordsOnHeapFile = heapFiles.get(i).getAllRecords();
+	/*
+	 * public int deleteFromRelation(String relName, int idxCol, String valeur)
+	 * throws IOException { List<Record> recordsOnHeapFile = null; List<Record>
+	 * list2 = new ArrayList<Record>(); HeapFile hp = null;
+	 * 
+	 * for (int i = 0; i < heapFiles.size(); i++) { if
+	 * (heapFiles.get(i).getReldef().getRelname().equals(relName)) { hp =
+	 * heapFiles.get(i); recordsOnHeapFile = heapFiles.get(i).getAllRecords(); } }
+	 * 
+	 * for (int i = 0; i < recordsOnHeapFile.size(); i++) { if
+	 * (recordsOnHeapFile.get(i).getValues().get(idxCol - 1).equals(valeur))
+	 * list2.add(recordsOnHeapFile.get(i)); }
+	 * 
+	 * if (hp != null) { hp.deleteRecordInDataPage(list2); }
+	 * 
+	 * return list2.size(); }
+	 */
+	
+	public int deletedFromRelation(String relname, int idxCol,String valeur) {
+		HeapFile current = null;
+		int i = 0;
+		int deletedRecord = 0;
+		
+		while(current == null) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
+				current = heapFiles.get(i);
+				deletedRecord = current.deleteInHeapFile(idxCol, valeur);
 			}
 		}
-
-		for (int i = 0; i < recordsOnHeapFile.size(); i++) {
-			if (recordsOnHeapFile.get(i).getValues().get(idxCol - 1).equals(valeur))
-				list2.add(recordsOnHeapFile.get(i));
-		}
-
-		if (hp != null) {
-			hp.deleteRecordInDataPage(list2);
-		}
 		
-		return list2.size();
-
+		return deletedRecord;
 	}
 
 }

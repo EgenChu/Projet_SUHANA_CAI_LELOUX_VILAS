@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class HeapFile {
 
@@ -147,37 +148,122 @@ public class HeapFile {
 		return listrec;
 	}
 
-	public void deleteRecordInDataPage(List<Record> listRecords) {
-		int indicePage = 1;
-		boolean trouve = false;
-
+	/*
+	 * public void deleteRecordInDataPage(List<Record> listRecords) { int indicePage
+	 * = 1; boolean trouve = false;
+	 * 
+	 * PageId header = new PageId(reldef.getFileIdx(), 0); ByteBuffer bb =
+	 * BufferManager.getInstance().getPage(header); int totalePage = bb.getInt(0);
+	 * BufferManager.getInstance().freePage(header, false);
+	 * 
+	 * do { PageId page = new PageId(reldef.getFileIdx(), indicePage);
+	 * 
+	 * ByteBuffer buff = BufferManager.getInstance().getPage(page);
+	 * 
+	 * for (int i = 0; i < reldef.getSlotCount(); i++) {
+	 * 
+	 * if (buff.get(i) == (byte) 1) { Record temp = new Record(this.reldef);
+	 * temp.readFromBuffer(buff, i * reldef.getRecordSize() +
+	 * reldef.getSlotCount()); if (listRecords.contains(temp)) { buff.put(i, (byte)
+	 * 0); trouve = true; }
+	 * 
+	 * } } BufferManager.getInstance().freePage(page, trouve); indicePage++; trouve
+	 * = false; } while (indicePage < totalePage + 1);
+	 * 
+	 * }
+	 */
+	
+	public int deleteInHeapFile(int colonne, String valeur) {
+		int totalDeletedRecord = 0;
+		
 		PageId header = new PageId(reldef.getFileIdx(), 0);
 		ByteBuffer bb = BufferManager.getInstance().getPage(header);
 		int totalePage = bb.getInt(0);
 		BufferManager.getInstance().freePage(header, false);
+		
+		for(int i = 1; i < totalePage + 1; i++) {
+			PageId page = new PageId(reldef.getFileIdx(),i);
+			totalDeletedRecord = deleteInDataPage(page,colonne - 1,valeur);
+		}
+		
+		return totalDeletedRecord;
+	}
 
-		do {
-			PageId page = new PageId(reldef.getFileIdx(), indicePage);
+	private int deleteInDataPage(PageId page, int colonne, String valeur) {
+		System.out.println(colonne);
+		int offset = 0;
+		int deletedRecord = 0;
+		boolean trouve = false;
 
-			ByteBuffer buff = BufferManager.getInstance().getPage(page);
+		ByteBuffer buff = BufferManager.getInstance().getPage(page);
 
-			for (int i = 0; i < reldef.getSlotCount(); i++) {
-
-				if (buff.get(i) == (byte) 1) {
-					Record temp = new Record(this.reldef);
-					temp.readFromBuffer(buff, i * reldef.getRecordSize() + reldef.getSlotCount());
-					if (listRecords.contains(temp)) {
+		for (int i = 0; i < reldef.getSlotCount(); i++) {
+			offset = calculPositionColonne(colonne,i);
+			if (buff.get(i) == (byte) 1) {
+				if (reldef.getList().get(colonne).startsWith("int")) {
+					if (buff.getInt(offset) == Integer.parseInt(valeur)) {
 						buff.put(i, (byte) 0);
 						trouve = true;
+						deletedRecord++;
+					}
+				} else if (reldef.getList().get(colonne).startsWith("float")) {
+					if (buff.getFloat(offset) == Float.parseFloat(valeur)) {
+						buff.put(i, (byte) 0);
+						trouve = true;
+						deletedRecord++;
+					}
+				} else if (reldef.getList().get(colonne).startsWith("string")) {
+					String string = reldef.getList().get(colonne);
+
+					StringTokenizer st = new StringTokenizer(string, "string");
+					int sizeString = Integer.parseInt(st.nextToken().toString());
+					StringBuffer sb = new StringBuffer();
+
+					for (int j = 0; j < sizeString; j++) {
+						sb.append(buff.getChar(offset + j * Character.BYTES));
+					}
+
+					if (sb.toString().equals(valeur)) {
+						buff.put(i, (byte) 0);
+						trouve = true;
+						deletedRecord++;
 					}
 
 				}
-			}
-			BufferManager.getInstance().freePage(page, trouve);
-			indicePage++;
-			trouve = false;
-		} while (indicePage < totalePage + 1);
 
+			}
+		}
+		
+		BufferManager.getInstance().freePage(page, trouve);
+		return deletedRecord;
+	}
+
+	private int calculPositionColonne(int colonne, int indiceRecord) {
+		int offset = 0;
+
+		int indice = 0;
+
+		while (indice != colonne) {
+			String string = reldef.getList().get(indice);
+			if (string.startsWith("int")) {
+				offset += Integer.BYTES;
+
+			} else if (string.startsWith("float")) {
+				offset += Float.BYTES;
+
+			} else if (string.startsWith("string")) {
+
+				StringTokenizer st = new StringTokenizer(string, "string");
+				int sizeString = Integer.parseInt(st.nextToken().toString());
+
+				for (int j = 0; j < sizeString; j++) {
+					offset += Character.BYTES;
+				}
+			}
+			indice++;
+		}
+
+		return reldef.getSlotCount() + reldef.getRecordSize() * indiceRecord + offset;
 	}
 
 }
