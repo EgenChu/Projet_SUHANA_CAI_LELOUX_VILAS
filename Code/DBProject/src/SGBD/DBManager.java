@@ -30,8 +30,6 @@ public class DBManager {
 	public void finish() throws IOException {
 		BufferManager.getInstance().flushAll();
 		DBDef.getInstance().finish();
-		File fichier = new File("Constants.PATH/Map.txt");
-		;
 	}
 
 	public void processCommand(String commande) throws IOException {
@@ -82,6 +80,10 @@ public class DBManager {
 		case "delete":
 			relname = st.nextToken();
 			delete(relname, Integer.parseInt(st.nextToken()), st.nextToken());
+			break;
+		case "createindex":
+			relname = st.nextToken();
+			createIndex(relname , Integer.parseInt(st.nextToken()) ,Integer.parseInt(st.nextToken()));
 			break;
 		}
 
@@ -188,6 +190,10 @@ public class DBManager {
 			}
 		}
 
+	}
+	
+	public void createIndex(String relName, int indCol, int ordre) {
+		
 	}
 	
 	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {
