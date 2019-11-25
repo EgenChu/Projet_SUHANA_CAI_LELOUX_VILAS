@@ -3,7 +3,9 @@ package SGBD;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class HeapFile {
@@ -138,12 +140,7 @@ public class HeapFile {
 
 		for (int i = 1; i < nbDataPage + 1; i++) {
 			PageId pageCourant = new PageId(reldef.getFileIdx(), i);
-			List<Record> listPerPage = new ArrayList<>();
-			listPerPage = getRecordsInDataPage(pageCourant);
-
-			for (int j = 0; j < listPerPage.size(); j++) {
-				listrec.add(listPerPage.get(j));
-			}
+			listrec.addAll(getRecordsInDataPage(pageCourant));
 		}
 		return listrec;
 	}
@@ -172,25 +169,25 @@ public class HeapFile {
 	 * 
 	 * }
 	 */
-	
+
 	public int deleteInHeapFile(int colonne, String valeur) {
 		int totalDeletedRecord = 0;
-		
+
 		PageId header = new PageId(reldef.getFileIdx(), 0);
 		ByteBuffer bb = BufferManager.getInstance().getPage(header);
 		int totalePage = bb.getInt(0);
 		BufferManager.getInstance().freePage(header, false);
-		
-		for(int i = 1; i < totalePage + 1; i++) {
-			PageId page = new PageId(reldef.getFileIdx(),i);
-			totalDeletedRecord += deleteInDataPage(page,colonne - 1,valeur);
+
+		for (int i = 1; i < totalePage + 1; i++) {
+			PageId page = new PageId(reldef.getFileIdx(), i);
+			totalDeletedRecord += deleteInDataPage(page, colonne - 1, valeur);
 		}
-		
+
 		return totalDeletedRecord;
 	}
 
 	private int deleteInDataPage(PageId page, int colonne, String valeur) {
-	//	System.out.println(colonne);
+//		System.out.println(colonne);
 		int offset = 0;
 		int deletedRecord = 0;
 		boolean trouve = false;
@@ -198,7 +195,7 @@ public class HeapFile {
 		ByteBuffer buff = BufferManager.getInstance().getPage(page);
 
 		for (int i = 0; i < reldef.getSlotCount(); i++) {
-			offset = calculPositionColonne(colonne,i);
+			offset = calculPositionColonne(colonne, i);
 			if (buff.get(i) == (byte) 1) {
 				if (reldef.getList().get(colonne).startsWith("int")) {
 					if (buff.getInt(offset) == Integer.parseInt(valeur)) {
@@ -233,7 +230,7 @@ public class HeapFile {
 
 			}
 		}
-		
+
 		BufferManager.getInstance().freePage(page, trouve);
 		return deletedRecord;
 	}
@@ -266,4 +263,60 @@ public class HeapFile {
 		return reldef.getSlotCount() + reldef.getRecordSize() * indiceRecord + offset;
 	}
 
+	private List<Rid> exportRidInDataPage(PageId page, int colonne, int valeur) {
+		int offset = 0;
+		List<Rid> rids = new ArrayList<>();
+
+		ByteBuffer buff = BufferManager.getInstance().getPage(page);
+
+		for (int i = 0; i < reldef.getSlotCount(); i++) {
+			offset = calculPositionColonne(colonne, i);
+			if (buff.get(i) == (byte) 1) {
+				if (reldef.getList().get(colonne).startsWith("int")) {
+					if (buff.getInt(offset) == valeur) {
+						rids.add(new Rid(page, i));
+					}
+
+				}
+
+			}
+		}
+
+		BufferManager.getInstance().freePage(page, false);
+
+		return rids;
+	}
+
+	private List<Rid> exportsRidInHeapFile(int colonne, int valeur) {
+		List<Rid> allRids = new ArrayList<>();
+
+		PageId header = new PageId(reldef.getFileIdx(), 0);
+		ByteBuffer bb = BufferManager.getInstance().getPage(header);
+		int totalePage = bb.getInt(0);
+		BufferManager.getInstance().freePage(header, false);
+
+		for (int i = 1; i < totalePage + 1; i++) {
+			PageId page = new PageId(reldef.getFileIdx(), i);
+			allRids.addAll(exportRidInDataPage(page, colonne, valeur));
+		}
+
+		return allRids;
+	}
+
+	public Map<Integer,List<Rid>> exportRid(String relname, int colx, String valeur) throws IOException{
+		Map<Integer,List<Rid>> values = new HashMap<>();
+		List<Record> allrecord = getAllRecords();
+		List<Integer> valuesInt = new ArrayList<>();
+		
+		for(Record record : allrecord) {
+			if(!valuesInt.contains(Integer.parseInt(record.getValues().get(colx))))
+				valuesInt.add(Integer.parseInt(record.getValues().get(colx)));
+		}
+		
+		for(Integer integer : valuesInt) {
+			values.put(integer, exportsRidInHeapFile(colx,Integer.parseInt(valeur)));
+		}
+		
+		return values;
+	}
 }

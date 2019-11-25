@@ -83,7 +83,6 @@ public class DBManager {
 			relname = st.nextToken();
 			delete(relname, Integer.parseInt(st.nextToken()), st.nextToken());
 			break;
-			
 		}
 
 	}
