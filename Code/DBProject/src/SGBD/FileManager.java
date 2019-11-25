@@ -102,10 +102,9 @@ public class FileManager {
 		while(current == null) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
 				current = heapFiles.get(i);
-				deletedRecord = current.deleteInHeapFile(idxCol, valeur);
+				deletedRecord += current.deleteInHeapFile(idxCol, valeur);
 			}
 		}
-		
 		return deletedRecord;
 	}
 
