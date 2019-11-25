@@ -41,7 +41,7 @@ public class HeapFile {
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
 		bf = BufferManager.getInstance().getPage(headerPage);
 
-		totalpage = bf.getInt(0) + 1;
+		totalpage = bf.getInt(0) +1;
 		bf.putInt(0, totalpage);
 		bf.putInt(totalpage * Integer.BYTES, reldef.getSlotCount());
 
@@ -183,14 +183,14 @@ public class HeapFile {
 		
 		for(int i = 1; i < totalePage + 1; i++) {
 			PageId page = new PageId(reldef.getFileIdx(),i);
-			totalDeletedRecord = deleteInDataPage(page,colonne - 1,valeur);
+			totalDeletedRecord += deleteInDataPage(page,colonne - 1,valeur);
 		}
 		
 		return totalDeletedRecord;
 	}
 
 	private int deleteInDataPage(PageId page, int colonne, String valeur) {
-		System.out.println(colonne);
+	//	System.out.println(colonne);
 		int offset = 0;
 		int deletedRecord = 0;
 		boolean trouve = false;
