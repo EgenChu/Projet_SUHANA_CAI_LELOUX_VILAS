@@ -193,7 +193,7 @@ public class DBManager {
 	}
 	
 	public void createIndex(String relName, int indCol, int ordre) {
-		
+		FileManager.getInstance().createTree(relName, indCol, ordre);
 	}
 	
 	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {

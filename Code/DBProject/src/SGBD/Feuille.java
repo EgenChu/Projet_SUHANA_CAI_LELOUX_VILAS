@@ -9,12 +9,14 @@ public class Feuille extends Noeud{
 	public Feuille(){
 		super();
 		rids = new ArrayList<>();
-
 	}
-
 	
 	public List<Rid> trouver(int val){
 		return rids.get(findIndice(val));
+	}
+
+	public List<List<Rid>> getRids() {
+		return rids;
 	}
 	
 }

@@ -3,6 +3,7 @@ package SGBD;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FileManager {
 
@@ -106,6 +107,21 @@ public class FileManager {
 			}
 		}
 		return deletedRecord;
+	}
+	
+	public void createTree(String relname, int colx,int ordre) {
+		Map<Integer,List<Rid>> table ;
+		
+		for (int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname))
+				try {
+					table =  heapFiles.get(i).exportRid(relname, colx);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		
+		
 	}
 
 }
