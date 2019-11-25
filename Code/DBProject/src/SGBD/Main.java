@@ -1,14 +1,10 @@
 package SGBD;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 public class Main {
 
@@ -26,8 +22,7 @@ public class Main {
 
 		File fichier = new File(args[0] + "/test.txt");
 		ByteBuffer bf = ByteBuffer.allocate(9);
-		try {
-			RandomAccessFile file = new RandomAccessFile(fichier, "rw");
+		try (RandomAccessFile file = new RandomAccessFile(fichier, "rw")){
 			if (fichier.createNewFile())
 				System.out.println("créé");
 			

@@ -30,6 +30,8 @@ public class DBManager {
 	public void finish() throws IOException {
 		BufferManager.getInstance().flushAll();
 		DBDef.getInstance().finish();
+		File fichier = new File("Constants.PATH/Map.txt");
+		;
 	}
 
 	public void processCommand(String commande) throws IOException {
@@ -185,6 +187,10 @@ public class DBManager {
 			}
 		}
 
+	}
+	
+	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {
+		
 	}
 
 }

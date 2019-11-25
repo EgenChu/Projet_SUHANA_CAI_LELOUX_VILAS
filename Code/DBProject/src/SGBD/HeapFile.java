@@ -43,7 +43,7 @@ public class HeapFile {
 		PageId headerPage = new PageId(reldef.getFileIdx(), 0);
 		bf = BufferManager.getInstance().getPage(headerPage);
 
-		totalpage = bf.getInt(0) + 1;
+		totalpage = bf.getInt(0) +1;
 		bf.putInt(0, totalpage);
 		bf.putInt(totalpage * Integer.BYTES, reldef.getSlotCount());
 
