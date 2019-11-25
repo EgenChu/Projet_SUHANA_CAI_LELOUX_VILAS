@@ -189,5 +189,9 @@ public class DBManager {
 		}
 
 	}
+	
+	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {
+		
+	}
 
 }
