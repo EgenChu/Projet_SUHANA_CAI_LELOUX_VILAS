@@ -159,7 +159,6 @@ public class DBManager {
 		}
 
 		record = new Record(relation, values);
-//		System.out.println(record.getReldef().getRelname());
 		FileManager.getInstance().insertRecordInRelation(record, relation.getRelname());
 	}
 
