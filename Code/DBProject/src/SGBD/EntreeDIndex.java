@@ -8,4 +8,13 @@ public class EntreeDIndex {
 		this.cle = cle;
 		this.fils = fils;
 	}
+	
+	public int getCle() {
+		return cle;
+	}
+
+	public Noeud getFils() {
+		return fils;
+	}
+
 }

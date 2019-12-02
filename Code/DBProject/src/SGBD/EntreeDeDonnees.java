@@ -10,5 +10,8 @@ public class EntreeDeDonnees {
 		this.cle = cle;
 		this.rid =rid;	
 	}
-
+	
+	public int getCle() {
+		return cle;
+	}
 }
