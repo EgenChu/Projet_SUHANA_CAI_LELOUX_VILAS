@@ -11,5 +11,9 @@ public class NoeudInter extends Noeud{
 		enfant = new ArrayList<>();
 	}
 
+	public List<Noeud> getEnfant() {
+		return enfant;
+	}
+
 }
 
