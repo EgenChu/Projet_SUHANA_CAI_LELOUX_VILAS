@@ -1,6 +1,7 @@
 package SGBD;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -94,17 +95,18 @@ public class FileManager {
 	 * 
 	 * return list2.size(); }
 	 */
-	
-	public int deletedFromRelation(String relname, int idxCol,String valeur) {
+
+	public int deletedFromRelation(String relname, int idxCol, String valeur) {
 		HeapFile current = null;
 		int i = 0;
 		int deletedRecord = 0;
-		
-		while(current == null) {
+
+		while (current == null && i < heapFiles.size()) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
 				current = heapFiles.get(i);
 				deletedRecord += current.deleteInHeapFile(idxCol, valeur);
 			}
+			i++;
 		}
 		return deletedRecord;
 	}
@@ -122,6 +124,56 @@ public class FileManager {
 		}
 		
 		
+	}
+
+	public int join(String relname1, String relname2, int numCol1, int numCol2) throws IOException {
+		int nbreTupleJoin = 0;
+		HeapFile current1 = null;
+		HeapFile current2 = null;
+		int i = 0;
+
+		while (i < heapFiles.size()) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname1)) {
+				current1 = heapFiles.get(i);
+			}
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname2)) {
+				current2 = heapFiles.get(i);
+			}
+			i++;
+		}
+		
+		PageId headerCurrent1 = new PageId(current1.getReldef().getFileIdx(), 0);
+		PageId headerCurrent2 = new PageId(current2.getReldef().getFileIdx(), 0);
+
+		
+		ByteBuffer buff = BufferManager.getInstance().getPage(headerCurrent1);
+		int nbPagecurrent1 = buff.getInt(0);
+		BufferManager.getInstance().freePage(headerCurrent1, false);
+
+		buff = BufferManager.getInstance().getPage(headerCurrent2);
+		int nbPagecurrent2 = buff.getInt(0);
+		BufferManager.getInstance().freePage(headerCurrent2, false);
+
+		for (int j = 1; j < nbPagecurrent1 + 1; j++) {
+			List<Record> records1 = current1.getRecordsInDataPage(new PageId(current1.getReldef().getFileIdx(), j));
+			for (int k = 1; k < nbPagecurrent2 + 1; k++) {
+				List<Record> records2 = current2.getRecordsInDataPage(new PageId(current2.getReldef().getFileIdx(), k));
+				
+				for (int l = 0; l < records1.size(); l++) {
+					for (int m = 0; m < records2.size(); m++) {
+						if (records1.get(l).getValues().get(numCol1 - 1)
+								.equals(records2.get(m).getValues().get(numCol2 - 1))) {
+							System.out.print(records1.get(l));
+							System.out.print(" ; " + records2.get(m) + "\n");
+							nbreTupleJoin++;
+						}
+					}
+				}
+
+			}
+		}
+
+		return nbreTupleJoin;
 	}
 
 }

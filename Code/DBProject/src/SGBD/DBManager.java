@@ -81,6 +81,10 @@ public class DBManager {
 			relname = st.nextToken();
 			delete(relname, Integer.parseInt(st.nextToken()), st.nextToken());
 			break;
+		case "join":
+			relname = st.nextToken();
+			join(relname,st.nextToken(),Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
+			break;
 		case "createindex":
 			relname = st.nextToken();
 			createIndex(relname , Integer.parseInt(st.nextToken()) ,Integer.parseInt(st.nextToken()));
@@ -169,7 +173,7 @@ public class DBManager {
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String row;
 
-			System.out.println(file.exists() ? "Il existe" : "Il existe pas");
+//			System.out.println(file.exists() ? "Il existe" : "Il existe pas");
 
 			for (int i = 0; i < FileManager.getInstance().getHeapFiles().size(); i++) {
 				if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
@@ -196,7 +200,13 @@ public class DBManager {
 	}
 	
 	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {
-		
+		try {
+			int resultat = FileManager.getInstance().join(nomRel1, nomRel2, idxColRel1, idxColRel2);
+			System.out.println("Total tuple(s) = " + resultat);
+		} catch (IOException e) {
+			System.out.println("resultat null");
+			e.printStackTrace();
+		}
 	}
 
 }
