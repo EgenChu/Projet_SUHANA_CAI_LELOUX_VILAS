@@ -303,7 +303,7 @@ public class HeapFile {
 		return allRids;
 	}
 
-	public Map<Integer,List<Rid>> exportRid(String relname, int colx, String valeur) throws IOException{
+	public Map<Integer,List<Rid>> exportRid(String relname, int colx) throws IOException{
 		Map<Integer,List<Rid>> values = new HashMap<>();
 		List<Record> allrecord = getAllRecords();
 		List<Integer> valuesInt = new ArrayList<>();
@@ -314,7 +314,7 @@ public class HeapFile {
 		}
 		
 		for(Integer integer : valuesInt) {
-			values.put(integer, exportsRidInHeapFile(colx,Integer.parseInt(valeur)));
+			values.put(integer, exportsRidInHeapFile(colx,integer));
 		}
 		
 		return values;
