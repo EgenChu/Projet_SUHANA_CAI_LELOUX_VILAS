@@ -30,6 +30,9 @@ public class Noeud {
 			else if(valeur==valeurs.get(milieu)) {
 				res = milieu;
 				break;
+			} else {
+				min = milieu + 1;
+				milieu = (min + max) / 2;
 			}
 			else {
 				min = indPot;
