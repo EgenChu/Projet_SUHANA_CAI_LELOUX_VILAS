@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Feuille extends Noeud{
-	protected List<List<Rid>> rids;
+	protected List<EntreeDeDonnees> donnees;
 
 	public Feuille(){
 		super();
-		rids = new ArrayList<>();
+		donnees = new ArrayList<>();
 	}
 	
-	public List<Rid> trouver(int val){
-		return rids.get(findIndice(val));
+	public EntreeDeDonnees trouver(int val){
+		return donnees.get(findIndice(val));
 	}
 
-	public List<List<Rid>> getRids() {
-		return rids;
+	public List<EntreeDeDonnees> getRids() {
+		return donnees;
 	}
 	
 }

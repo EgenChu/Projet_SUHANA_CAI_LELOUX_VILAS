@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoeudInter extends Noeud{
-	List<Noeud> enfant;
+	List<EntreeDIndex> enfant;
+	Noeud pointeur;
 
 	public NoeudInter() {
 		super();
 		enfant = new ArrayList<>();
 	}
 
-	public List<Noeud> getEnfant() {
+	public List<EntreeDIndex> getEnfant() {
 		return enfant;
 	}
 
