@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
 
@@ -51,6 +54,20 @@ public class Main {
 
 		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		Map<Integer,String> map = new HashMap<>();
+		
+		map.put(23, "hello");
+		map.put(3, "hell");
+		map.put(234, "azhello");
+		map.put(1300, "hazzzzello");
+		map.put(24444444, "hello");
+		
+		TreeMap<Integer,String> map1 = new TreeMap<>(map);
+		
+		for(Integer integer : map1.keySet()) {
+			System.out.println(integer + " : " + map.get(integer));
 		}
 
 //			public static void main(String[] args) { Constants.PATH = args[0];

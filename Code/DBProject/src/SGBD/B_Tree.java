@@ -80,10 +80,6 @@ public class B_Tree {
 		return ((Feuille) noeud).donnees.get(milieu);
 	}
 
-	/*
-	 * public Noeud chercherFils(NoeudInter noeud, int cle) { return null; }
-	 */
-
 	public void rajouterEntree(Feuille f, EntreeDeDonnees ed) {
 		f.getDonnees().add(ed);
 	}
@@ -106,6 +102,9 @@ public class B_Tree {
 				Feuille feuille = new Feuille(n.getParent());
 				for (int i = iMilieu; i < iMax + 1; i++) {
 					rajouterEntree(feuille, ((Feuille) n).getDonnees().get(i));
+				}
+
+				for (int i = iMax; i > iMilieu - 1; i--) {
 					((Feuille) n).getDonnees().remove(i);
 				}
 
@@ -126,16 +125,16 @@ public class B_Tree {
 				if (n.getParent() != null) {
 					NoeudInter frere = new NoeudInter(n.getParent(),
 							((NoeudInter) n).getEnfant().get(iMilieu).getFils());
+					rajouterEntree((NoeudInter) n.getParent(),
+							new EntreeDIndex(((NoeudInter) n).getEnfant().get(iMilieu).getCle(), frere));
 
 					for (int i = iMilieu + 1; i < iMax + 1; i++) {
 						rajouterEntree(frere, ((NoeudInter) n).getEnfant().get(i));
-						((NoeudInter) n).getEnfant().remove(i);
 					}
 
-					rajouterEntree((NoeudInter) n.getParent(),
-							new EntreeDIndex(((NoeudInter) n).getEnfant().get(iMilieu).getCle(),
-									frere));
-					((NoeudInter) n).getEnfant().remove(iMilieu);
+					for (int i = iMax; i > iMilieu - 1; i--) {
+						((NoeudInter) n).getEnfant().remove(i);
+					}
 
 					if (((NoeudInter) n.getParent()).getEnfant().size() == 2 * ordre + 1) {
 						diviser(n.getParent());
@@ -145,19 +144,20 @@ public class B_Tree {
 
 				} else {
 					NoeudInter frere = new NoeudInter(null, ((NoeudInter) n).getEnfant().get(iMilieu).getFils());
+					NoeudInter parent = new NoeudInter(null, n);
+					rajouterEntree(parent, new EntreeDIndex(((NoeudInter) n).getEnfant().get(iMilieu).getCle(), frere));
 
 					for (int i = iMilieu + 1; i < iMax + 1; i++) {
 						rajouterEntree(frere, ((NoeudInter) n).getEnfant().get(i));
+					}
+
+					for (int i = iMax; i > iMilieu - 1; i--) {
 						((NoeudInter) n).getEnfant().remove(i);
 					}
 
-					NoeudInter parent = new NoeudInter(null, n);
 					frere.setParent(parent);
 					n.setParent(parent);
 
-					rajouterEntree(parent, new EntreeDIndex(((NoeudInter) n).getEnfant().get(iMilieu).getCle(), frere));
-					((NoeudInter) n).getEnfant().remove(iMilieu);
-					
 					racine = parent;
 
 					return frere;
@@ -166,6 +166,7 @@ public class B_Tree {
 			}
 
 		} else {
+
 			iMin = 0;
 			iMax = ((Feuille) n).getDonnees().size() - 1;
 			iMilieu = (iMin + iMax + 1) / 2;
@@ -173,15 +174,17 @@ public class B_Tree {
 			Feuille feuille = new Feuille(null);
 			for (int i = iMilieu; i < iMax + 1; i++) {
 				rajouterEntree(feuille, ((Feuille) n).getDonnees().get(i));
+			}
+
+			for (int i = iMax; i > iMilieu - 1; i--) {
 				((Feuille) n).getDonnees().remove(i);
 			}
 
 			((Feuille) n).setParent(
 					racine = new NoeudInter(null, n, new EntreeDIndex(feuille.getDonnees().get(0).getCle(), feuille)));
-
+			feuille.setParent(racine);
 			return feuille;
 		}
 	}
 
-	}
 }

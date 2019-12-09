@@ -19,7 +19,7 @@ public class Rid {
 
 	@Override
 	public String toString() {
-		return "pageId :" + pageId + ", slotIdx : " + slotIdx;
+		return pageId + ", slotIdx : " + slotIdx;
 	}
 	
 }

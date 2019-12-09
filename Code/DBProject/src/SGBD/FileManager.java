@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.TreeMap;
 
 public class FileManager {
 
@@ -110,19 +110,55 @@ public class FileManager {
 		}
 		return deletedRecord;
 	}
-	
-	public void createTree(String relname, int colx,int ordre) {
-		Map<Integer,List<Rid>> table ;
-		
+
+	public void createTree(String relname, int colx, int ordre) {
+		TreeMap<Integer, List<Rid>> table;
+
 		for (int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(relname))
-				try {
-					table =  heapFiles.get(i).exportRid(relname, colx);
-				} catch (IOException e) {
-					e.printStackTrace();
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
+				
+				if (heapFiles.get(i).getReldef().getList().get(colx - 1).equals("int")) {
+
+					try {
+						table = new TreeMap<>(heapFiles.get(i).exportRid(relname, colx));
+
+						B_Tree tree = new B_Tree(ordre);
+
+						for (Integer integer : table.keySet()) {
+							tree.bulkLoad(new EntreeDeDonnees(integer, table.get(integer)));
+						}
+						
+						heapFiles.get(i).getIndex().put(colx, tree);
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
 				}
+			}
+		}
+
+	}
+	
+	public void selectindex(String relname, int colx, int valeur) {
+		EntreeDeDonnees edd = null;
+		HeapFile hp = null;
+		
+		for(int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
+				hp = heapFiles.get(i);
+				edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
+			}
 		}
 		
+		if(edd != null && hp != null) {
+			for(Rid rid : edd.getRid()) {
+				System.out.println(hp.ridToRecord(rid));
+			}
+		}
+		else {
+			System.err.println("Il n'y a pad d'index référencé à ce nom/colonne");
+		}
 		
 	}
 
@@ -141,11 +177,10 @@ public class FileManager {
 			}
 			i++;
 		}
-		
+
 		PageId headerCurrent1 = new PageId(current1.getReldef().getFileIdx(), 0);
 		PageId headerCurrent2 = new PageId(current2.getReldef().getFileIdx(), 0);
 
-		
 		ByteBuffer buff = BufferManager.getInstance().getPage(headerCurrent1);
 		int nbPagecurrent1 = buff.getInt(0);
 		BufferManager.getInstance().freePage(headerCurrent1, false);
@@ -158,7 +193,7 @@ public class FileManager {
 			List<Record> records1 = current1.getRecordsInDataPage(new PageId(current1.getReldef().getFileIdx(), j));
 			for (int k = 1; k < nbPagecurrent2 + 1; k++) {
 				List<Record> records2 = current2.getRecordsInDataPage(new PageId(current2.getReldef().getFileIdx(), k));
-				
+
 				for (int l = 0; l < records1.size(); l++) {
 					for (int m = 0; m < records2.size(); m++) {
 						if (records1.get(l).getValues().get(numCol1 - 1)

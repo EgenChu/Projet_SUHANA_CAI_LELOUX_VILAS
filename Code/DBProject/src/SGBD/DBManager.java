@@ -89,6 +89,9 @@ public class DBManager {
 			relname = st.nextToken();
 			createIndex(relname , Integer.parseInt(st.nextToken()) ,Integer.parseInt(st.nextToken()));
 			break;
+		case "selectindex":
+			relname = st.nextToken();
+			selectIndex(relname, Integer.parseInt(st.nextToken()) ,Integer.parseInt(st.nextToken()));
 		}
 
 	}
@@ -173,8 +176,6 @@ public class DBManager {
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String row;
 
-//			System.out.println(file.exists() ? "Il existe" : "Il existe pas");
-
 			for (int i = 0; i < FileManager.getInstance().getHeapFiles().size(); i++) {
 				if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getRelname().equals(nomRelation))
 					relation = FileManager.getInstance().getHeapFiles().get(i).getReldef();
@@ -200,9 +201,10 @@ public class DBManager {
 		FileManager.getInstance().createTree(relName, indCol, ordre);
 	}
 	
-
-
-
+	public void selectIndex(String relname, int indCol, int valeur) {
+		FileManager.getInstance().selectindex(relname, indCol, valeur);
+	}
+	
 	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {
 		try {
 			int resultat = FileManager.getInstance().join(nomRel1, nomRel2, idxColRel1, idxColRel2);

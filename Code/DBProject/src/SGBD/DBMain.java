@@ -39,7 +39,7 @@ public class DBMain {
 	public static boolean valideCommande(String chaine) {
 		return (chaine.startsWith("create") || chaine.startsWith("insert") || chaine.startsWith("select")
 				|| chaine.startsWith("selectall") || chaine.startsWith("clean") || chaine.startsWith("insertall")
-				|| chaine.startsWith("delete")) || chaine.startsWith("join");
+				|| chaine.startsWith("delete")) || chaine.startsWith("join") || chaine.startsWith("createindex");
 	}
 
 }

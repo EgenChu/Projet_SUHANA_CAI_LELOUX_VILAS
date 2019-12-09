@@ -7,13 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 public class HeapFile {
 
 	private RelDef reldef;
+	private Map<Integer,B_Tree> index;
 
 	public HeapFile(RelDef reldef) {
 		this.reldef = reldef;
+		this.index = new TreeMap<>();
 	}
 
 	public RelDef getReldef() {
@@ -309,14 +312,30 @@ public class HeapFile {
 		List<Integer> valuesInt = new ArrayList<>();
 		
 		for(Record record : allrecord) {
-			if(!valuesInt.contains(Integer.parseInt(record.getValues().get(colx))))
-				valuesInt.add(Integer.parseInt(record.getValues().get(colx)));
+			if(!valuesInt.contains(Integer.parseInt(record.getValues().get(colx - 1)))) {
+				valuesInt.add(Integer.parseInt(record.getValues().get(colx - 1)));
+			}
 		}
 		
 		for(Integer integer : valuesInt) {
-			values.put(integer, exportsRidInHeapFile(colx,integer));
+			values.put(integer, exportsRidInHeapFile(colx - 1,integer));
 		}
 		
 		return values;
 	}
+	
+	public Record ridToRecord(Rid rid) {
+		Record record = new Record(reldef);
+		
+		ByteBuffer buff = BufferManager.getInstance().getPage(rid.getPageId());
+		record.readFromBuffer(buff, rid.getSlotIdx() * reldef.getRecordSize() + reldef.getSlotCount());
+		BufferManager.getInstance().freePage(rid.getPageId(), false);
+		
+		return record;
+	}
+
+	public Map<Integer, B_Tree> getIndex() {
+		return index;
+	}
+	
 }
