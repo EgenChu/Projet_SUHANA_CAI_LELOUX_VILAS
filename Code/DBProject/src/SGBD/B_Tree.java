@@ -80,14 +80,6 @@ public class B_Tree {
 		return ((Feuille) noeud).donnees.get(milieu);
 	}
 
-	public void rajouterEntree(Feuille f, EntreeDeDonnees ed) {
-		f.getDonnees().add(ed);
-	}
-
-	public void rajouterEntree(NoeudInter noeud, EntreeDIndex ei) {
-		noeud.getEnfant().add(ei);
-	}
-
 	public Noeud diviser(Noeud n) {
 		int iMin;
 		int iMilieu;
@@ -185,6 +177,14 @@ public class B_Tree {
 			feuille.setParent(racine);
 			return feuille;
 		}
+	}
+	
+	public void rajouterEntree(Feuille f, EntreeDeDonnees ed) {
+		f.getDonnees().add(ed);
+	}
+
+	public void rajouterEntree(NoeudInter noeud, EntreeDIndex ei) {
+		noeud.getEnfant().add(ei);
 	}
 
 }

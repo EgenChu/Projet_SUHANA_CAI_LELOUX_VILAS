@@ -10,11 +10,6 @@ public class Feuille extends Noeud{
 		super(parent);
 		donnees = new ArrayList<>();
 	}
-	
-	/*
-	 * public EntreeDeDonnees trouver(int val){ return donnees.get(findIndice(val));
-	 * }
-	 */
 
 	public List<EntreeDeDonnees> getDonnees() {
 		return donnees;

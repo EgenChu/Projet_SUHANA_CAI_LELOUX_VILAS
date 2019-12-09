@@ -32,10 +32,12 @@ public class DBDef {
 		File fichier = new File(Constants.PATH + "/Catalogue.def");
 
 		if (fichier.exists()) {
-			if (fichier.length() == 0)
+			if (fichier.length() == 0) {
 				System.out.println("Le fichier est vide");
-			else
+			}
+			else {
 				readRelDefFromFile(fichier);
+			}	
 		} else {
 			fichier.createNewFile();
 			System.out.println("le fichier n'existe pas, il vient d'être est créé");
