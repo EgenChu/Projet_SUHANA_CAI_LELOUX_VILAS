@@ -11,4 +11,12 @@ public class EntreeDeDonnees {
 		this.rid =rid;	
 	}
 
+	public int getCle() {
+		return cle;
+	}
+
+	public List<Rid> getRid() {
+		return rid;
+	}
+
 }

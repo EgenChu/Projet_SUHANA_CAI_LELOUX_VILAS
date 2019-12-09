@@ -5,42 +5,25 @@ import java.util.List;
 
 public class Noeud {
 	protected List<Integer> valeurs;
-	private Noeud racine;
-	private int ordre;
+	private Noeud parent;
 
 	public List<Integer> getValeurs() {
 		return valeurs;
 	}
 
-	public Noeud() {
+	public Noeud(Noeud parent) {
 		valeurs = new ArrayList<>();
+		this.parent = parent;
 	}
 
-	public int findIndice(int valeur) {
-		int res=-1;
-		int min =0;
-		int max = valeurs.size()-1;
-		int milieu = (valeurs.size()/2);
-		while(milieu>=min && milieu <=max) {
-			int indPot = milieu;
-			if (valeur<valeurs.get(milieu)) {
-				max= milieu-1;
-				milieu = (min+max)/2;
-			}
-			else if(valeur==valeurs.get(milieu)) {
-				res = milieu;
-				break;
-			} else {
-				min = milieu + 1;
-				milieu = (min + max) / 2;
-			}
-			else {
-				min = indPot;
-				milieu = (min+max)/2;
-			}
-		}
-		return res;
+	public Noeud getParent() {
+		return parent;
 	}
+	
+	public void setParent(Noeud parent) {
+		this.parent = parent;
+	}
+
 //	
 //	public void addNoeud(int valeur, List<Rid> rids) {
 //		//s'il y a de la place dans la feuille
