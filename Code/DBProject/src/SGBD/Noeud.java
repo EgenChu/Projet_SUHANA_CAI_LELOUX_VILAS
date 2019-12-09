@@ -1,5 +1,8 @@
 package SGBD;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Noeud {
 	protected List<Integer> valeurs;
 	private Noeud parent;
