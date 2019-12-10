@@ -16,5 +16,4 @@ public class Noeud {
 		this.parent = parent;
 	}
 
-	
 }

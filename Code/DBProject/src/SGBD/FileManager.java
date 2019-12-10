@@ -140,9 +140,10 @@ public class FileManager {
 
 	}
 	
-	public void selectindex(String relname, int colx, int valeur) {
+	public int selectindex(String relname, int colx, int valeur) {
 		EntreeDeDonnees edd = null;
 		HeapFile hp = null;
+		int total = 0;
 		
 		for(int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
@@ -153,11 +154,14 @@ public class FileManager {
 		
 		if(edd != null && hp != null) {
 			for(Rid rid : edd.getRid()) {
+				total++;
 				System.out.println(hp.ridToRecord(rid));
 			}
+			return total;
 		}
 		else {
 			System.err.println("Il n'y a pad d'index référencé à ce nom/colonne");
+			return 0;
 		}
 		
 	}

@@ -129,7 +129,6 @@ public class DBManager {
 			i++;
 		}
 		BufferManager.getInstance().reset();
-		;
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
 	}

@@ -97,7 +97,6 @@ public class BufferManager {
 	}
 
 	public void flushAll() {
-
 		for (int i = 0; i < frames.size(); i++) {
 			if (frames.get(i).isDirty()) {
 				try {
