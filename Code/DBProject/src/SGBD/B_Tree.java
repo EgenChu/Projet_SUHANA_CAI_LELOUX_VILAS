@@ -58,7 +58,7 @@ public class B_Tree {
 			return noeud.enfant.get(indPot).getFils();
 	}
 
-	public EntreeDeDonnees chercherVal(int cle) {
+	public EntreeDeDonnees chercherVal(int cle) throws IndexOutOfBoundsException {
 		Noeud noeud = chercherFils((NoeudInter) racine, cle);
 		while (noeud instanceof NoeudInter) {
 			noeud = chercherFils((NoeudInter) noeud, cle);
