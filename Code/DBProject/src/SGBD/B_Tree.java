@@ -81,7 +81,7 @@ public class B_Tree {
 				milieu = (min + max + 1) / 2;
 			}
 		}
-//		printValuesOfArbre(racine);
+//		printArbre(racine);
 		return ((Feuille) noeud).donnees.get(indpot);
 	}
 
@@ -123,7 +123,6 @@ public class B_Tree {
 					NoeudInter frere = new NoeudInter(n.getParent(),
 							((NoeudInter) n).getEnfant().get(iMilieu).getFils());
 
-					System.out.println(n.getParent() + " : " + ((NoeudInter) n).getEnfant().get(iMilieu).getCle());
 					rajouterEntree((NoeudInter) n.getParent(),
 							new EntreeDIndex(((NoeudInter) n).getEnfant().get(iMilieu).getCle(), frere));
 
@@ -194,30 +193,27 @@ public class B_Tree {
 		noeud.getEnfant().add(ei);
 	}
 
-	public void printValuesOfArbre(Noeud n) {
+	public void printArbre(Noeud n) {
+		
+		if (n instanceof NoeudInter) {
+			for (int i = 0; i < ((NoeudInter) n).getEnfant().size(); i++) {
+				System.out.print(((NoeudInter) n).getEnfant().get(i).getCle() + "\t");
+			}
+			System.out.println("--- Noeud Intermediaire ");
+		}
+
+		if (n instanceof NoeudInter) {
+			printArbre(((NoeudInter) n).getPointeur());
+			for (int i = 0; i < ((NoeudInter) n).getEnfant().size(); i++) {
+				printArbre(((NoeudInter) n).getEnfant().get(i).getFils());
+			}
+		}
 
 		if (n instanceof Feuille) {
-//			System.out.println("Feuille : " + n);
 			for (int i = 0; i < ((Feuille) n).getDonnees().size(); i++) {
 				System.out.print(((Feuille) n).getDonnees().get(i).getCle() + "\t");
 			}
-			System.out.println("---");
-		}
-
-		/*
-		 * 
-		 * if (n instanceof NoeudInter) { // System.out.println("Noeud Intermediaire : "
-		 * + n); for (int i = 0; i < ((NoeudInter) n).getEnfant().size(); i++) {
-		 * System.out.print(((NoeudInter) n).getEnfant().get(i).getCle() + "\t"); }
-		 * System.out.println("--- : " + n); }
-		 */
-		 
-
-		if (n instanceof NoeudInter) {
-			printValuesOfArbre(((NoeudInter) n).getPointeur());
-			for (int i = 0; i < ((NoeudInter) n).getEnfant().size(); i++) {
-				printValuesOfArbre(((NoeudInter) n).getEnfant().get(i).getFils());
-			}
+			System.out.println("--- Feuille");
 		}
 	}
 

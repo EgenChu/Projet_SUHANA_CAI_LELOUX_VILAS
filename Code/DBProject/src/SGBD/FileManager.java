@@ -116,20 +116,19 @@ public class FileManager {
 
 		for (int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
-				
+
 				if (heapFiles.get(i).getReldef().getList().get(colx - 1).equals("int")) {
 
 					try {
 						table = new TreeMap<>(heapFiles.get(i).exportRid(relname, colx));
-
 						B_Tree tree = new B_Tree(ordre);
 
 						for (Integer integer : table.keySet()) {
 							tree.bulkLoad(new EntreeDeDonnees(integer, table.get(integer)));
 						}
-						
+
 						heapFiles.get(i).getIndex().put(colx, tree);
-						
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -139,26 +138,33 @@ public class FileManager {
 		}
 
 	}
-	
+
 	public int selectindex(String relname, int colx, int valeur) {
 		EntreeDeDonnees edd = null;
 		HeapFile hp = null;
 		int total = 0;
 		try {
-			for(int i = 0; i < heapFiles.size(); i++) {
+			int i = 0;
+			do {
 				if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
 					hp = heapFiles.get(i);
-					edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
 				}
-			}
-		}catch(IndexOutOfBoundsException e) {}finally {
-			if(edd != null && hp != null) {
-				for(Rid rid : edd.getRid()) {
+				i++;
+			} while (i < heapFiles.size());
+			edd = hp.getIndex().get(colx).chercherVal(valeur);
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("La valeur recherché n'est pas dans l'abre");
+		} catch (NullPointerException e) {
+
+		}
+
+		finally {
+			if (edd != null && hp != null) {
+				for (Rid rid : edd.getRid()) {
 					total++;
 					System.out.println(hp.ridToRecord(rid));
 				}
-			}
-			else {
+			} else {
 				System.out.println("Il n'y a pad d'index référencé à ce nom/colonne");
 			}
 		}

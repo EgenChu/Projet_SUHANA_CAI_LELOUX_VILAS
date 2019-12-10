@@ -169,7 +169,6 @@ public class DBManager {
 	}
 
 	public void insertAll(String nomRelation, String fileName) throws IOException {
-
 		RelDef relation = null;
 		File file = new File(Constants.PATH + "/../" + fileName);
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -201,7 +200,8 @@ public class DBManager {
 	}
 	
 	public void selectIndex(String relname, int indCol, int valeur) {
-		FileManager.getInstance().selectindex(relname, indCol, valeur);
+		int totalRecord = FileManager.getInstance().selectindex(relname, indCol, valeur);
+		System.out.println("Totale records = " + totalRecord);
 	}
 	
 	public void join(String nomRel1, String nomRel2, int idxColRel1, int idxColRel2) {
