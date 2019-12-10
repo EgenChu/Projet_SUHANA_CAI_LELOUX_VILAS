@@ -24,22 +24,27 @@ public class DBMain {
 					e.printStackTrace();
 				}
 				break;
-			} else if (valideCommande(chaine)) {
-				try {
-					DBManager.getInstance().processCommand(chaine);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			} else {
-				System.err.println("VOTRE COMMANDE N'EST PAS VALIDE, VEUILLEZ RÉESSAYER");
+				if (valideCommande(chaine)) {
+					try {
+						DBManager.getInstance().processCommand(chaine);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					System.err.println("VOTRE COMMANDE N'EST PAS VALIDE, VEUILLEZ RÉESSAYER");
+				}
 			}
+
 		}
 	}
 
 	public static boolean valideCommande(String chaine) {
 		return (chaine.startsWith("create") || chaine.startsWith("insert") || chaine.startsWith("select")
 				|| chaine.startsWith("selectall") || chaine.startsWith("clean") || chaine.startsWith("insertall")
-				|| chaine.startsWith("delete")) || chaine.startsWith("join") || chaine.startsWith("createindex");
+				|| chaine.startsWith("delete")) || chaine.startsWith("join") || chaine.startsWith("createindex")
+				|| chaine.startsWith("selectindex");
 	}
 
 }

@@ -151,7 +151,6 @@ public class FileManager {
 				edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
 			}
 		}
-		
 		if(edd != null && hp != null) {
 			for(Rid rid : edd.getRid()) {
 				total++;
