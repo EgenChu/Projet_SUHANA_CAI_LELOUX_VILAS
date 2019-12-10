@@ -140,29 +140,30 @@ public class FileManager {
 
 	}
 	
-	public void selectindex(String relname, int colx, int valeur) {
+	public int selectindex(String relname, int colx, int valeur) {
 		EntreeDeDonnees edd = null;
 		HeapFile hp = null;
-		try {
-			for(int i = 0; i < heapFiles.size(); i++) {
-				if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
-					hp = heapFiles.get(i);
-					edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
-				}
+		int total = 0;
+		
+		for(int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
+				hp = heapFiles.get(i);
+				edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
 			}
 		}
-		catch(IndexOutOfBoundsException e){
-		}finally {
-			if(edd != null && hp != null) {
-				for(Rid rid : edd.getRid()) {
-					System.out.println(hp.ridToRecord(rid));
-				}
+		
+		if(edd != null && hp != null) {
+			for(Rid rid : edd.getRid()) {
+				total++;
+				System.out.println(hp.ridToRecord(rid));
 			}
-			else {
-				System.out.println("Il n'y a pad d'index référencé à ce nom/colonne");
-			}
+			return total;
 		}
-
+		else {
+			System.err.println("Il n'y a pad d'index référencé à ce nom/colonne");
+			return 0;
+		}
+		
 	}
 
 	public int join(String relname1, String relname2, int numCol1, int numCol2) throws IOException {

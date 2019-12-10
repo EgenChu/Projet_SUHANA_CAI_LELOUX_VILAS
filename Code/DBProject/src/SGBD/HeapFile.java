@@ -34,9 +34,10 @@ public class HeapFile {
 				buff.putInt(i, 0);
 			}
 			BufferManager.getInstance().freePage(temp, true);
-			System.out.println(temp);
-		} else
-			System.out.println("file already exist");
+//			System.out.println(temp);
+		} else {
+//			System.out.println("file already exist");	
+		}
 	}
 
 	public PageId addDataPage() throws IOException {
@@ -190,7 +191,6 @@ public class HeapFile {
 	}
 
 	private int deleteInDataPage(PageId page, int colonne, String valeur) {
-//		System.out.println(colonne);
 		int offset = 0;
 		int deletedRecord = 0;
 		boolean trouve = false;

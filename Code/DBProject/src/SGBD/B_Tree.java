@@ -10,6 +10,7 @@ public class B_Tree {
 	}
 
 	public void bulkLoad(EntreeDeDonnees edd) {
+		System.out.println(edd.getCle());
 		if (racine instanceof NoeudInter) {
 			Noeud noeud = (NoeudInter) racine;
 
@@ -19,6 +20,15 @@ public class B_Tree {
 
 			if (!(noeud instanceof NoeudInter)) {
 				rajouterEntree((Feuille) noeud, edd);
+
+				/*
+				 * if (edd.getCle() == 151) { System.out.println(((Feuille)
+				 * noeud).donnees.size() == 2 * ordre + 1); for (int i = 0; i < ((Feuille)
+				 * noeud).donnees.size(); i++) { System.out.println(((Feuille)
+				 * noeud).donnees.get(i).getCle()); }
+				 * 
+				 * }
+				 */
 				if (((Feuille) noeud).donnees.size() == 2 * ordre + 1) {
 					diviser(noeud);
 				}
@@ -66,6 +76,11 @@ public class B_Tree {
 		int min = 0;
 		int max = ((Feuille) noeud).donnees.size() - 1;
 		int milieu = ((Feuille) noeud).donnees.size() / 2;
+		/*
+		 * for (int i = 0; i < ((Feuille) noeud).donnees.size(); i++) {
+		 * System.out.println(((Feuille) noeud).getDonnees().get(i).getCle() + " : " +
+		 * "----------"); }
+		 */
 		int indpot = -1;
 		while (min<= max) {
 			if (((Feuille) noeud).donnees.get(milieu).getCle() == cle) {
@@ -79,6 +94,7 @@ public class B_Tree {
 				milieu = (min + max + 1) / 2;
 			}
 		}
+		printValuesOfArbre(racine);
 		return ((Feuille) noeud).donnees.get(indpot);
 	}
 
@@ -180,13 +196,29 @@ public class B_Tree {
 			return feuille;
 		}
 	}
-	
+
 	public void rajouterEntree(Feuille f, EntreeDeDonnees ed) {
 		f.getDonnees().add(ed);
 	}
 
 	public void rajouterEntree(NoeudInter noeud, EntreeDIndex ei) {
 		noeud.getEnfant().add(ei);
+	}
+
+	public void printValuesOfArbre(Noeud n) {
+		if ( n instanceof NoeudInter) {
+			printValuesOfArbre(((NoeudInter) n).getPointeur());
+			for (int i = 0; i < ((NoeudInter) n).getEnfant().size(); i++) {
+				printValuesOfArbre(((NoeudInter) n).getEnfant().get(i).getFils());
+			}
+		} 
+		
+		if (n instanceof Feuille){
+			for (int i = 0; i < ((Feuille) n).getDonnees().size(); i++) {
+				System.out.print(((Feuille) n).getDonnees().get(i).getCle() + "\t");
+			}
+			System.out.println("---");
+		}
 	}
 
 }

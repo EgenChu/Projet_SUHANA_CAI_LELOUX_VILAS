@@ -33,14 +33,14 @@ public class DBDef {
 
 		if (fichier.exists()) {
 			if (fichier.length() == 0) {
-				System.out.println("Le fichier est vide");
+//				System.out.println("Le fichier est vide");
 			}
 			else {
 				readRelDefFromFile(fichier);
 			}	
 		} else {
 			fichier.createNewFile();
-			System.out.println("le fichier n'existe pas, il vient d'être est créé");
+//			System.out.println("le fichier n'existe pas, il vient d'être est créé");
 		}
 	}
 
