@@ -144,25 +144,25 @@ public class FileManager {
 		EntreeDeDonnees edd = null;
 		HeapFile hp = null;
 		int total = 0;
-		
-		for(int i = 0; i < heapFiles.size(); i++) {
-			if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
-				hp = heapFiles.get(i);
-				edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
+		try {
+			for(int i = 0; i < heapFiles.size(); i++) {
+				if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
+					hp = heapFiles.get(i);
+					edd = heapFiles.get(i).getIndex().get(colx).chercherVal(valeur);
+				}
+			}
+		}catch(IndexOutOfBoundsException e) {}finally {
+			if(edd != null && hp != null) {
+				for(Rid rid : edd.getRid()) {
+					total++;
+					System.out.println(hp.ridToRecord(rid));
+				}
+			}
+			else {
+				System.out.println("Il n'y a pad d'index référencé à ce nom/colonne");
 			}
 		}
-		if(edd != null && hp != null) {
-			for(Rid rid : edd.getRid()) {
-				total++;
-				System.out.println(hp.ridToRecord(rid));
-			}
-			return total;
-		}
-		else {
-			System.err.println("Il n'y a pad d'index référencé à ce nom/colonne");
-			return 0;
-		}
-		
+		return total;
 	}
 
 	public int join(String relname1, String relname2, int numCol1, int numCol2) throws IOException {
