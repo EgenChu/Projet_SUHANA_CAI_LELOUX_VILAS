@@ -49,7 +49,7 @@ public class B_Tree {
 		int max = noeud.enfant.size() - 1;
 		int milieu = (noeud.enfant.size() / 2);
 		int indPot = -1;
-		while (milieu >= min && milieu <= max) {
+		while (min<= max) {
 			if (noeud.enfant.get(milieu).getCle() == cle) {
 				indPot = milieu;
 				break;
@@ -76,14 +76,15 @@ public class B_Tree {
 		int min = 0;
 		int max = ((Feuille) noeud).donnees.size() - 1;
 		int milieu = ((Feuille) noeud).donnees.size() / 2;
-
 		/*
 		 * for (int i = 0; i < ((Feuille) noeud).donnees.size(); i++) {
 		 * System.out.println(((Feuille) noeud).getDonnees().get(i).getCle() + " : " +
 		 * "----------"); }
 		 */
-		while (milieu >= min && milieu <= max) {
+		int indpot = -1;
+		while (min<= max) {
 			if (((Feuille) noeud).donnees.get(milieu).getCle() == cle) {
+				indpot = milieu;
 				break;
 			} else if (((Feuille) noeud).donnees.get(milieu).getCle() < cle) {
 				min = milieu + 1;
@@ -94,7 +95,7 @@ public class B_Tree {
 			}
 		}
 		printValuesOfArbre(racine);
-		return ((Feuille) noeud).donnees.get(milieu);
+		return ((Feuille) noeud).donnees.get(indpot);
 	}
 
 	public Noeud diviser(Noeud n) {
