@@ -10,27 +10,25 @@ public class B_Tree {
 	}
 
 	public void bulkLoad(EntreeDeDonnees edd) {
-		if (edd.getCle() < 200) {
-			if (racine instanceof NoeudInter) {
-				Noeud noeud = (NoeudInter) racine;
+		if (racine instanceof NoeudInter) {
+			Noeud noeud = (NoeudInter) racine;
 
-				do {
-					noeud = chercherFils((NoeudInter) noeud, edd.getCle());
-				} while (noeud instanceof NoeudInter);
+			do {
+				noeud = chercherFils((NoeudInter) noeud, edd.getCle());
+			} while (noeud instanceof NoeudInter);
 
-				if (!(noeud instanceof NoeudInter)) {
-					rajouterEntree((Feuille) noeud, edd);
-					if (((Feuille) noeud).donnees.size() == 2 * ordre + 1) {
-						diviser(noeud);
-					}
+			if (!(noeud instanceof NoeudInter)) {
+				rajouterEntree((Feuille) noeud, edd);
+				if (((Feuille) noeud).donnees.size() == 2 * ordre + 1) {
+					diviser(noeud);
 				}
+			}
 
-			} else {
-				if (((Feuille) racine).donnees.size() < 2 * ordre + 1) {
-					rajouterEntree((Feuille) racine, edd);
-					if (((Feuille) racine).donnees.size() == 2 * ordre + 1) {
-						diviser(racine);
-					}
+		} else {
+			if (((Feuille) racine).donnees.size() < 2 * ordre + 1) {
+				rajouterEntree((Feuille) racine, edd);
+				if (((Feuille) racine).donnees.size() == 2 * ordre + 1) {
+					diviser(racine);
 				}
 			}
 		}
@@ -194,13 +192,13 @@ public class B_Tree {
 	}
 
 	public void printArbre(Noeud n) {
-		
-		if (n instanceof NoeudInter) {
-			for (int i = 0; i < ((NoeudInter) n).getEnfant().size(); i++) {
-				System.out.print(((NoeudInter) n).getEnfant().get(i).getCle() + "\t");
-			}
-			System.out.println("--- Noeud Intermediaire ");
-		}
+
+		/*
+		 * if (n instanceof NoeudInter) { for (int i = 0; i < ((NoeudInter)
+		 * n).getEnfant().size(); i++) { System.out.print(((NoeudInter)
+		 * n).getEnfant().get(i).getCle() + "\t"); }
+		 * System.out.println("--- Noeud Intermediaire "); }
+		 */
 
 		if (n instanceof NoeudInter) {
 			printArbre(((NoeudInter) n).getPointeur());

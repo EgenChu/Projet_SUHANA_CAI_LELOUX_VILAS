@@ -143,29 +143,32 @@ public class FileManager {
 		EntreeDeDonnees edd = null;
 		HeapFile hp = null;
 		int total = 0;
+		
 		try {
 			int i = 0;
+			
 			do {
 				if (heapFiles.get(i).getReldef().getRelname().equals(relname)) {
 					hp = heapFiles.get(i);
 				}
 				i++;
 			} while (i < heapFiles.size());
-			edd = hp.getIndex().get(colx).chercherVal(valeur);
+			
+			if(hp != null) {
+				edd = hp.getIndex().get(colx).chercherVal(valeur);
+			}
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("La valeur recherché n'est pas dans l'abre");
-		} catch (NullPointerException e) {
-
+			System.out.println("L'entrée d'index recherché n'existe pas dans l'abre donnée");
+		}catch(NullPointerException e){
+			System.out.println("Il n'existe pas d'arbre référencé pour cette colonne");
 		}
 
 		finally {
-			if (edd != null && hp != null) {
+			if (edd != null) {
 				for (Rid rid : edd.getRid()) {
 					total++;
 					System.out.println(hp.ridToRecord(rid));
 				}
-			} else {
-				System.out.println("Il n'y a pad d'index référencé à ce nom/colonne");
 			}
 		}
 		return total;
