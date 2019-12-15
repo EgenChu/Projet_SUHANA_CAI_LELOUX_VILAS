@@ -6,10 +6,10 @@ public class B_Tree {
 
 	public B_Tree(int ordre) {
 		this.ordre = ordre;
-		racine = new Feuille(null);
+		racine = null;
 	}
 
-	public void bulkLoad(EntreeDeDonnees edd) {
+	public void insertionEdd(EntreeDeDonnees edd) {
 		if (racine instanceof NoeudInter) {
 			Noeud noeud = (NoeudInter) racine;
 
@@ -23,12 +23,40 @@ public class B_Tree {
 					diviser(noeud);
 				}
 			}
-
 		} else {
+			if (racine == null) racine = new Feuille(null);
 			if (((Feuille) racine).donnees.size() < 2 * ordre + 1) {
 				rajouterEntree((Feuille) racine, edd);
 				if (((Feuille) racine).donnees.size() == 2 * ordre + 1) {
 					diviser(racine);
+				}
+			}
+		}
+	}
+
+	public void bulkloading(Feuille feuille) {
+		if (racine == null) {
+			racine = feuille;
+		} else {
+			
+			Noeud noeud;
+			if( !(racine instanceof Feuille)) {
+				noeud = (NoeudInter) racine;
+				do {
+					noeud = chercherFils((NoeudInter) noeud, feuille.getDonnees().get(0).getCle());
+				} while (noeud instanceof NoeudInter);
+			}
+			else {
+				noeud = racine;
+			}
+
+			if (!(noeud instanceof NoeudInter)) {
+				for(int i = 0;i<feuille.getDonnees().size();i++) {
+					rajouterEntree((Feuille)noeud,feuille.getDonnees().get(i));
+				}
+				
+				if (((Feuille) noeud).donnees.size() > 2 * ordre) {
+					diviser(noeud);
 				}
 			}
 		}
@@ -162,7 +190,6 @@ public class B_Tree {
 			}
 
 		} else {
-
 			iMin = 0;
 			iMax = ((Feuille) n).getDonnees().size() - 1;
 			iMilieu = (iMin + iMax + 1) / 2;
@@ -192,7 +219,6 @@ public class B_Tree {
 	}
 
 	public void printArbre(Noeud n) {
-
 		/*
 		 * if (n instanceof NoeudInter) { for (int i = 0; i < ((NoeudInter)
 		 * n).getEnfant().size(); i++) { System.out.print(((NoeudInter)
@@ -213,6 +239,10 @@ public class B_Tree {
 			}
 			System.out.println("--- Feuille");
 		}
+	}
+
+	public int getOrdre() {
+		return ordre;
 	}
 
 }
