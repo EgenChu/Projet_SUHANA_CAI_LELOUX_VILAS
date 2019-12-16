@@ -122,14 +122,9 @@ public class FileManager {
 					try {
 						table = new TreeMap<>(heapFiles.get(i).exportRid(relname, colx));
 						B_Tree tree = new B_Tree(ordre);
+						
 						int indiceOrdre = 0;
 						Feuille feuille =  new Feuille(null);
-
-						/*
-						 * for (Integer integer : table.keySet()) { tree.insertionEdd(new
-						 * EntreeDeDonnees(integer, table.get(integer))); }
-						 */
-						
 						for (Integer integer : table.keySet()) {
 							if(indiceOrdre == 2 * tree.getOrdre()) {
 								tree.bulkloading(feuille);
@@ -139,10 +134,14 @@ public class FileManager {
 							}
 							tree.rajouterEntree(feuille, new EntreeDeDonnees(integer, table.get(integer)));
 							indiceOrdre++;
-							//tree.insertionEdd(new EntreeDeDonnees(integer, table.get(integer)));
 						}
 						tree.bulkloading(feuille);
-
+						
+						/*
+						 * for (Integer integer : table.keySet()) { tree.insertionEdd(new
+						 * EntreeDeDonnees(integer, table.get(integer))); }
+						 */
+						
 						heapFiles.get(i).getIndex().put(colx, tree);
 
 					} catch (IOException e) {
