@@ -1,6 +1,5 @@
 #!/bin/bash
 
 cd Code/DBProject/src
-javac SGBD/*.java
-java SGBD.DBMain ../../../DB
-
+javac  SGBD/*.java -d ../bin
+java -cp ../bin/ SGBD.DBMain ../../../DB

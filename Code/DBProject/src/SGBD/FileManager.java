@@ -130,7 +130,6 @@ public class FileManager {
 								tree.bulkloading(feuille);
 								indiceOrdre = 0;
 								feuille =  new Feuille(null);
-								
 							}
 							tree.rajouterEntree(feuille, new EntreeDeDonnees(integer, table.get(integer)));
 							indiceOrdre++;
@@ -147,7 +146,9 @@ public class FileManager {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-
+				}
+				else {
+					System.err.println("le type de colonne donné n'est pas un type \"int\" ");
 				}
 			}
 		}
@@ -231,7 +232,6 @@ public class FileManager {
 						}
 					}
 				}
-
 			}
 		}
 

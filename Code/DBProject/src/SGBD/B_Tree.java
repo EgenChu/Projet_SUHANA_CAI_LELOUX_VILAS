@@ -12,8 +12,7 @@ public class B_Tree {
 	}
 
 	public void insertionEdd(EntreeDeDonnees edd) {
-		if (racine == null)
-			racine = new Feuille(null);
+		if (racine == null) racine = new Feuille(null);
 		if (racine instanceof NoeudInter) {
 			Noeud noeud = (NoeudInter) racine;
 
@@ -39,31 +38,14 @@ public class B_Tree {
 
 	public void bulkloading(Feuille feuille) {
 		if (racine == null) {
-			racine = new NoeudInter(null,feuille);
+			racine = new NoeudInter(null, feuille);
 			noeudLePlusADroite = (NoeudInter) racine;
-		}
-		else {
+		} else {
 			rajouterEntree(noeudLePlusADroite, new EntreeDIndex(feuille.getDonnees().get(0).getCle(), feuille));
-			if(noeudLePlusADroite.getEnfant().size() == 2 * ordre + 1) {
+			if (noeudLePlusADroite.getEnfant().size() == 2 * ordre + 1) {
 				noeudLePlusADroite = (NoeudInter) diviser(noeudLePlusADroite);
-			}	
+			}
 		}
-
-		/*
-		 * if (racine == null) { racine = feuille; } else {
-		 * 
-		 * Noeud noeud; if (!(racine instanceof Feuille)) { noeud = (NoeudInter) racine;
-		 * do { noeud = chercherFils((NoeudInter) noeud,
-		 * feuille.getDonnees().get(0).getCle()); } while (noeud instanceof NoeudInter);
-		 * } else { noeud = racine; }
-		 * 
-		 * if (!(noeud instanceof NoeudInter)) { for (int i = 0; i <
-		 * feuille.getDonnees().size(); i++) { rajouterEntree((Feuille) noeud,
-		 * feuille.getDonnees().get(i)); }
-		 * 
-		 * if (((Feuille) noeud).donnees.size() > 2 * ordre) { diviser(noeud); } } }
-		 */
-
 	}
 
 	public Noeud chercherFils(NoeudInter noeud, int cle) {
