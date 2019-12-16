@@ -18,11 +18,11 @@ public class DBDef {
 	}
 
 	/** Instance unique pré-initialisée */
-	private static DBDef DBDef = new DBDef();
+	private static DBDef DBDef = null;
 
 	/** Point d'accès pour l'instance unique du singleton */
 	public static DBDef getInstance() {
-
+		if (DBDef == null) DBDef = new DBDef();
 		return DBDef;
 	}
 
@@ -111,7 +111,7 @@ public class DBDef {
 			}
 		}
 		else {
-			System.err.println("Il n'y a pas de relation stocké dans Catalogue.def");
+//			System.err.println("Il n'y a pas de relation stocké dans Catalogue.def");
 		}
 		
 		}
